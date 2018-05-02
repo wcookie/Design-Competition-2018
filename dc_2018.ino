@@ -1,4 +1,5 @@
 #include<math.h>
+#include<array>
 
 /*
  * Code is for Design Competition 2018
@@ -28,10 +29,10 @@ struct Square {
 
 
 
-double distance(double x1, double x2, double y1, double y2) {
-  double xDiff = x1 - x2;
+double distance(Point p1, Point p2) {
+  double xDiff = p1.x - p2.x;
   xDiff *= xDiff;
-  double yDiff = y1 - y2;
+  double yDiff = p1.y - p2.y;
   yDiff *= yDiff;
   return sqrt(xDiff + yDiff);
 }
