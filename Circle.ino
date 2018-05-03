@@ -21,6 +21,7 @@ Circle findNearestCircle(Point p) {
        minDistance = tempDistance;
      }
    }
+   return ret;
 }
 
 
@@ -37,5 +38,6 @@ Point findNearestEdge(Circle c, Point p) {
   circleXPos += c.center.x;
   circleYPos /= denominator;
   circleYPos += c.center.y;
+  return Point(circleXPos, circleYPos);
 }
 
