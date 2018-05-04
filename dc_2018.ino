@@ -86,9 +86,13 @@ struct Robot {
 
 void setup() {
   Serial.begin(9600);
+  motorSetup();
 }
 
 void loop() {
+
+  moveMotors(120, 1, 120, 1);
+  delay(1000);
   
 }
 
