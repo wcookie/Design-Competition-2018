@@ -6,6 +6,7 @@
  * All code and strategy written by
  * Josh Cohen, Wyatt Cook, and The. Daniel Sours
  */
+
  
 enum goalType {
   // Whether or not we are on the square or circle team
@@ -84,9 +85,14 @@ struct Robot {
   
 };
 
+Robot phoenix; // Phoenix is our robot object used throughout
+ 
+
 void setup() {
   Serial.begin(9600);
   motorSetup();
+  // set up our phoenix robot based on what we have.
+  phoenix = Robot(Point(), 0.0, getTeam(), Block(), ellipse);
 }
 
 void loop() {
