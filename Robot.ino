@@ -13,6 +13,25 @@
  int rightA = 5; // Right analog pin
  int rightD = 7; //Right digital pin
 
+ int teamSwitchD = 12; // Switch to tell us which team we're on
+
+
+goalType getTeam() {
+  /*
+   * Reads the switch, and returns the correct team.
+   * HIGH == circle
+   * LOW == Square
+   */
+  pinMode(teamSwitchD, INPUT);
+  int switchVal = digitalRead(teamSwitchD);
+  if (switchVal == HIGH) {
+    return circle;
+  } else {
+    return square;
+  }
+  
+}
+
 void motorSetup() {
   /*
    * Sets the motor pins to OUTPUT
