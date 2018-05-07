@@ -14,6 +14,7 @@
  int rightD = 7; //Right digital pin
 
  int teamSwitchD = 12; // Switch to tell us which team we're on
+ int attackSwitchD = 13; // Switch to tell us if we're scoring or defending
 
 
 goalType getTeam() {
@@ -29,7 +30,21 @@ goalType getTeam() {
   } else {
     return square;
   }
-  
+}
+
+attackState getAttackState() {
+  /*
+   * Reads the attack state switch, and returns whether we are scoring or defending
+   * HIGH == Scoring
+   * LOW == defending
+   */
+   pinMode(attackSwitchD, INPUT);
+   int switchVal = digitalRead(attackSwitchD);
+   if (switchVal == HIGH) {
+    return scoring;
+   } else {
+    return defending;
+   }
 }
 
 void motorSetup() {

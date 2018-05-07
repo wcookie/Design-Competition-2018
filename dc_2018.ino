@@ -37,6 +37,15 @@ enum drivingState {
   scanning // We are just scanning for blocks
 };
 
+enum attackState {
+  // This will determine whether our robot is an attack or defense bot 
+  // For our multibot system
+  // for clarification circle team with defense, will be messing with 
+  // the square team
+  scoring, // We are trying to score points
+  defending // we are trying to limit the opponent's point total
+};
+
 struct Point {
   // General Point struct
   double x;
@@ -79,9 +88,10 @@ struct Robot {
   goalType team;
   Block desiredBlock; 
   drivingState driving;
+  attackState atk;
   Robot(Point p = Point(), double h = 0.0, goalType t = circle, Block b = Block(), 
-        drivingState d = ellipse):
-          pos(p), heading(h), team(t), desiredBlock(b), driving(d){}
+        drivingState d = ellipse, attackState a = scoring):
+          pos(p), heading(h), team(t), desiredBlock(b), driving(d), atk(a){}
   
 };
 
@@ -92,7 +102,7 @@ void setup() {
   Serial.begin(9600);
   motorSetup();
   // set up our phoenix robot based on what we have.
-  phoenix = Robot(Point(), 0.0, getTeam(), Block(), ellipse);
+  phoenix = Robot(Point(), 0.0, getTeam(), Block(), ellipse, scoring);
 }
 
 void loop() {
