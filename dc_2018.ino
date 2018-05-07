@@ -101,6 +101,7 @@ Robot phoenix; // Phoenix is our robot object used throughout
 void setup() {
   Serial.begin(9600);
   motorSetup();
+  currentSensorSetup();
   // set up our phoenix robot based on what we have.
   phoenix = Robot(Point(), 0.0, getTeam(), Block(), ellipse, getAttackState());
 }
