@@ -102,7 +102,7 @@ void setup() {
   Serial.begin(9600);
   motorSetup();
   // set up our phoenix robot based on what we have.
-  phoenix = Robot(Point(), 0.0, getTeam(), Block(), ellipse, scoring);
+  phoenix = Robot(Point(), 0.0, getTeam(), Block(), ellipse, getAttackState());
 }
 
 void loop() {
