@@ -26,7 +26,7 @@ enum blockState {
   // This is going to be mostly on useful in the original stages of the blocks
   moved, // We are confident that we have moved it away physically
   invisible, // We tried to find it but didn't see it where we expected it 
-  unknown, // We haven't checked that block
+  unknown, // We haven't checked that block, also means probably on ellipse, especiallly in start
   seen // We have locked in on a block that we're fairly confident is in that position
 };
 
