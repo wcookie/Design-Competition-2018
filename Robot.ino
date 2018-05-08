@@ -13,7 +13,7 @@
  int rightPWM = 20; // Right pwm pin
  int rightDIR = 16; //Right digital pin
 
- int hbENABLEin = 14 //
+ int hbENABLEin = 14; //
  int hbENABLEout = 15; //enable/mode pin of both hbridges
 
  int teamSwitchD = 12; // Switch to tell us which team we're on //TBD
