@@ -13,7 +13,8 @@
  int rightPWM = 20; // Right pwm pin
  int rightDIR = 16; //Right digital pin
 
- int modePin = 15; //enable/mode pin of both hbridges
+ int hbENABLEin = 14 //
+ int hbENABLEout = 15; //enable/mode pin of both hbridges
 
  int teamSwitchD = 12; // Switch to tell us which team we're on //TBD
  int attackSwitchD = 13; // Switch to tell us if we're scoring or defending //TDB1q
@@ -53,10 +54,11 @@ void motorSetup() {
   /*
    * Sets the motor pins to OUTPUT
    */
-  pinMode(leftA, OUTPUT);
-  pinMode(leftD, OUTPUT);
-  pinMode(rightA, OUTPUT);
-  pinMode(rightD, OUTPUT);
+  pinMode(hbENABLEout, OUTPUT);
+  pinMode(leftPWM, OUTPUT);
+  pinMode(leftDIR, OUTPUT);
+  pinMode(rightPWM, OUTPUT);
+  pinMode(rightDIR, OUTPUT);
 }
 
  void moveMotors(int leftSpeed, bool leftDirection, int rightSpeed, bool rightDirection) {
@@ -65,8 +67,8 @@ void motorSetup() {
    * True is forwards for direction, False is backwards
    * speeds go between 0 and 255
    */
-  analogWrite(leftA, leftSpeed);
-  digitalWrite(leftD, leftDirection);
-  analogWrite(rightA, rightSpeed);
-  digitalWrite(rightD, rightDirection);
+  analogWrite(leftPWM, leftSpeed);
+  digitalWrite(leftDIR, leftDirection);
+  analogWrite(rightPWM, rightSpeed);
+  digitalWrite(rightDIR, rightDirection);
 }

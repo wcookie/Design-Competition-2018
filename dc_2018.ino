@@ -106,8 +106,7 @@ void setup() {
   phoenix = Robot(Point(), 0.0, getTeam(), Block(), ellipse, getAttackState());
 }
 
-void loop() {
-
+void loop() { 
   moveMotors(120, 1, 120, 1);
   delay(1000);
   
