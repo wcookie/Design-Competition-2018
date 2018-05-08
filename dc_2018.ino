@@ -50,8 +50,16 @@ struct Point {
   // General Point struct
   double x;
   double y;
-  Point(double xPos=0.0, double yPos=0.0):x(xPos),
-           y(yPos){}
+  Point(double xPos=0.0, double yPos=0.0):
+    x(xPos), y(yPos){}
+};
+
+struct LightPoint {
+  // Point struct for the "physical" address we are reading from the vive
+  double x;
+  double y;
+  LightPoint(double xPos=0.0, double yPos=0.0):
+    x(xPos), y(yPos){}
 };
 
 struct Circle {
