@@ -8,13 +8,15 @@
 
  // Motors pins
 
- int leftA = 4; // Left analog pin
- int leftD = 6; // Left digital pins
- int rightA = 5; // Right analog pin
- int rightD = 7; //Right digital pin
+ int leftPWM = 21; // Left pwm pin
+ int leftDIR = 17; // Left digital pins
+ int rightPWM = 20; // Right pwm pin
+ int rightDIR = 16; //Right digital pin
 
- int teamSwitchD = 12; // Switch to tell us which team we're on
- int attackSwitchD = 13; // Switch to tell us if we're scoring or defending
+ int modePin = 15; //enable/mode pin of both hbridges
+
+ int teamSwitchD = 12; // Switch to tell us which team we're on //TBD
+ int attackSwitchD = 13; // Switch to tell us if we're scoring or defending //TDB1q
 
 
 goalType getTeam() {
