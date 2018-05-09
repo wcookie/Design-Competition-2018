@@ -161,7 +161,7 @@ void loop() {
   Serial.println(readCurrentSensor());
   readViveSensors();
   printRawVivePositions();
-  delay(100);
+  delay(1000);
   
 }
 
