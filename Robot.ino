@@ -13,11 +13,15 @@
  int rightPWM = 20; // Right pwm pin
  int rightDIR = 16; //Right digital pin
 
- int hbENABLEin = 14 //
+<<<<<<< HEAD
+ int iSense = 23;
+=======
+ int hbENABLEin = 14; //
  int hbENABLEout = 15; //enable/mode pin of both hbridges
+>>>>>>> b9fc755b5cef8993c6a85f15a9f2a94c3df17629
 
  int teamSwitchD = 12; // Switch to tell us which team we're on //TBD
- int attackSwitchD = 13; // Switch to tell us if we're scoring or defending //TDB1q
+ int attackSwitchD = 13; // Switch to tell us if we're scoring or defending //TBD
 
 
 goalType getTeam() {
@@ -54,7 +58,6 @@ void motorSetup() {
   /*
    * Sets the motor pins to OUTPUT
    */
-  pinMode(hbENABLEout, OUTPUT);
   pinMode(leftPWM, OUTPUT);
   pinMode(leftDIR, OUTPUT);
   pinMode(rightPWM, OUTPUT);

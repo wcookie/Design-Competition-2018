@@ -1,6 +1,6 @@
 // Tab for miscalleneous functions / utility
 
-int currentSensorPin = 15; // An analog pin
+int currentSensorPin = 23; //A9
 
 double distance(Point p1, Point p2) {
   double xDiff = p1.x - p2.x;
@@ -18,6 +18,12 @@ double readCurrentSensor() {
   /*
    * Gets the current sensor value
    */
-   return analogRead(currentSensorPin);
+   double sum = 0;
+   for (int ii = 0; ii < 10; ++ii){
+    sum += analogRead(currentSensorPin);
+   }
+   sum = sum / 10;
+
+   return sum;
 }
 
