@@ -19,11 +19,22 @@ double readCurrentSensor() {
    * Gets the current sensor value
    */
    double sum = 0;
+   double counter = 0;
    for (int ii = 0; ii < 10; ++ii){
-    sum += analogRead(currentSensorPin);
+    double sensorVal = analogRead(currentSensorPin);
+    if ((sensorVal > 50) && (sensorVal < 700)) {
+      counter += 1.0;
+    }
    }
-   sum = sum / 10;
+   sum = sum / counter;
 
    return sum;
+}
+
+double readCurrentSensorBasic() {
+  /*
+   * basic version of above
+   */
+   return analogRead(currentSensorPin);
 }
 

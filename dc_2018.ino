@@ -115,10 +115,9 @@ void setup() {
 }
 
 void loop() { 
-  moveMotors(120, 1, 120, 1);
-  Serial.print(readCurrentSensor());
-  Serial.print("\r\n");
-  delay(1000);
+  moveMotors(70, 1, 70, 1);
+  Serial.println(readCurrentSensor());
+  delay(100);
   
 }
 
