@@ -1,4 +1,6 @@
 // Stuff to do with points, aka converting between Physical and virtual points
+
+// Our virtual coordinate range
 double X_COORD_RANGE = 120;
 double Y_COORD_RANGE = 60;
 
@@ -9,7 +11,7 @@ double Y_COORD_RANGE = 60;
  * Physical Points: What we read from the vive. This will be raw values that we calibrate.  
  * Virtual Points: Points that will be used for our calculations, derived from physical addresses
  * and calibration values.
- * Virtual points go from -60 to +60 and -30 to +30 as the field is 12 x 6
+ * Virtual points go from 0 to 120 and 0 to 60 as the field is 12 x 6
  * Left/right /up and down is defined from looking from the Design Competition sign perspective
  */
 
@@ -34,8 +36,8 @@ Point physicalPointToVirtualPoint(LightPoint lp) {
  double yDiff = topY - bottomY;
  double xProp = X_COORD_RANGE / xDiff;
  double yProp = Y_COORD_RANGE / yDiff;
- double virtualX = xProp * lp.x;
- double virtualY = yProp * lp.y;
+ double virtualX = xProp * lp.x + (X_COORD_RANGE / 2);
+ double virtualY = yProp * lp.y + (Y_COORD_RANGE / 2);
  return Point(virtualX, virtualY);
 }
 
@@ -51,8 +53,8 @@ LightPoint virtualPointToPhysicalPoint(Point p) {
  double yDiff = topY - bottomY;
  double xProp = X_COORD_RANGE / xDiff;
  double yProp = Y_COORD_RANGE / yDiff;
- double physicalX = p.x / xProp;
- double physicalY = p.y / yProp;
+ double physicalX = (p.x - (X_COORD_RANGE / 2)) / xProp;
+ double physicalY = (p.y - (Y_COORD_RANGE / 2)) / yProp;
  return LightPoint(physicalX, physicalY);
 }
 

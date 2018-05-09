@@ -42,8 +42,10 @@ RawViveData readViveSensors() {
     xOld2 = xFilt2; // remember for next loop
     yOld2 = yFilt2; // remember for next loop
   }
-  
-  return RawViveData(LightPoint(xPos1, yPos1), LightPoint(xPos2, yPos2));
+  double xDiff = xPos1 - xPos2;
+  double yDiff = yPos1 - yPos2;
+  double heading = atan2(yDiff, xDiff);
+  return RawViveData(LightPoint(xPos1, yPos1), LightPoint(xPos2, yPos2), heading);
 }
 
 void printRawVivePositions() {
