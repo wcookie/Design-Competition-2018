@@ -25,6 +25,8 @@ double readCurrentSensor() {
     if ((sensorVal > 50) && (sensorVal < 700)) {
       counter += 1.0;
     }
+    sum += analogRead(currentSensorPin);
+    delay(1);
    }
    sum = sum / counter;
 
