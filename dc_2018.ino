@@ -1,12 +1,21 @@
 #include<math.h>
 #include<array>
-
+// For Vive:
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#define Vive1PIN 2// the signal from the FRONT sensor
+#define Vive2PIN 3 // the signal from the BACK sensor
+#define DEG_PER_US 0.0216 // equal to (180 deg) / (8333 us)
+#define DEG_TO_RADIAN 0.0174533 // pi/180
+#define LIGHTHOUSEHEIGHT 3.5 // in feet
+#define LIGHTHOUSEANGLE 30 // in degrees
 /*
  * Code is for Design Competition 2018
  * All code and strategy written by
- * Josh Cohen, Wyatt Cook, and The. Daniel Sours
+ * Josh Cohen, Wyatt Cook, and The. Daniel Sours (and some from Nick Marchuk) 
  */
 
+// Our Enums 
  
 enum goalType {
   // Whether or not we are on the square or circle team
@@ -46,6 +55,8 @@ enum attackState {
   defending // we are trying to limit the opponent's point total
 };
 
+// Our Structs
+
 struct Point {
   // General Point struct
   double x;
@@ -60,6 +71,16 @@ struct LightPoint {
   double y;
   LightPoint(double xPos=0.0, double yPos=0.0):
     x(xPos), y(yPos){}
+};
+
+struct RawViveData {
+  // A struct that contains both vive Points, and our heading
+  LightPoint v1LightPoint;
+  LightPoint v2LightPoint;
+  double heading;
+  RawViveData(LightPoint v1LP = LightPoint(), LightPoint v2LP = LightPoint(),
+              double h = 0.0):
+                v1LightPoint(v1LP), v2LightPoint(v2LP), heading(h){}
 };
 
 struct Circle {
@@ -103,8 +124,27 @@ struct Robot {
   
 };
 
+// Vive struct
+
+typedef struct {
+  unsigned long changeTime[11];
+  double horzAng;
+  double vertAng;
+  int useMe;
+  int collected;
+} viveSensor;
+
+
+// Our Global Variables
 Robot phoenix; // Phoenix is our robot object used throughout
- 
+
+// Vive Global Variables
+volatile viveSensor V1, V2;
+double xPos1, yPos1, xPos2, yPos2;
+double xOld1 = 0, yOld1 = 0, xFilt1 = 0, yFilt1 = 0;
+double xOld2 = 0, yOld2 = 0, xFilt2 = 0, yFilt2 = 0;
+
+
 
 void setup() {
   Serial.begin(9600);
@@ -116,7 +156,10 @@ void setup() {
 
 void loop() { 
   moveMotors(70, 1, 70, 1);
+  Serial.print("Current:");
   Serial.println(readCurrentSensor());
+  readViveSensors();
+  printRawVivePositions();
   delay(100);
   
 }
