@@ -22,10 +22,11 @@ double readCurrentSensor() {
    double counter = 0;
    for (int ii = 0; ii < 10; ++ii){
     double sensorVal = analogRead(currentSensorPin);
-    if ((sensorVal > 50) && (sensorVal < 700)) {
+    if ((sensorVal > 50) && (sensorVal < 950)) {
       counter += 1.0;
+      sum += analogRead(currentSensorPin);
     }
-    sum += analogRead(currentSensorPin);
+    
     delay(1);
    }
    sum = sum / counter;
