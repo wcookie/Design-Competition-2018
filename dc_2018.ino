@@ -168,15 +168,9 @@ void setup() {
 void loop() { 
   // First update our robot's position and direction
   setRobotPositionAndDirection(phoenix);
-  
+  determineBlockHolding(phoenix);
+  printDebugging();
   moveMotors(70, 1, 70, 1);
-  Serial.print("Current:");
-  Serial.println(readCurrentSensor());
-  RawViveData rvd = readViveSensors();
-  printRawVivePositions();
-  printVirtualPositions(physicalPointToVirtualPoint(rvd.v1LightPoint),
-                        physicalPointToVirtualPoint(rvd.v2LightPoint),
-                        rvd.heading);
   delay(500);
   
 }

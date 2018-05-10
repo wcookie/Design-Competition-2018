@@ -63,4 +63,16 @@ bool holdingBlock() {
    return (readTripwire() > tripwireThreshold);
 }
 
+void printDebugging() {
+  /*
+   * Prints all debugging information
+   */
+  Serial.print("Current:");
+  Serial.println(readCurrentSensor());
+  RawViveData rvd = readViveSensors();
+  printRawVivePositions();
+  printVirtualPositions(physicalPointToVirtualPoint(rvd.v1LightPoint),
+                        physicalPointToVirtualPoint(rvd.v2LightPoint),
+                        rvd.heading);
+}
 
