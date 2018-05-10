@@ -15,10 +15,16 @@ double Y_COORD_RANGE = 60;
  * Left/right /up and down is defined from looking from the Design Competition sign perspective
  */
 
+// Physical addresses of corners
 LightPoint topLeftCorner = LightPoint(-1.26, 3.20); 
 LightPoint bottomLeftCorner = LightPoint(1.36, -3.17);
 LightPoint topRightCorner = LightPoint(14.50, 3.60);
 LightPoint bottomRightCorner = LightPoint(15.4, -1.6);
+
+//Virtual address of ellipse center, plus virtual distance of radii
+Point center = Point(60, 30);
+double xRadius = 40; // TODO: MEASURE
+double yRadius = 25; // TODO: MEASURE
 
 
 Point physicalPointToVirtualPoint(LightPoint lp) {
@@ -58,4 +64,24 @@ LightPoint virtualPointToPhysicalPoint(Point p) {
  return LightPoint(physicalX, physicalY);
 }
 
+
+ellipseState robotEllipseState(Robot r) {
+  /*
+   * This will determine whether our robot is inside or outside of the ellipse
+   * This is used in determining which block to go to, and what to do with it.
+   * Taken from the following stack exchange link: 
+   * https://math.stackexchange.com/questions/76457/check-if-a-point-is-within-an-ellipse
+   */
+   double xTerm = sq(r.pos.x - center.x);
+   xTerm /= sq(xRadius);
+   double yTerm = sq(r.pos.y - center.y);
+   yTerm /= sq(yRadius);
+   double compVal = xTerm + yTerm;
+   // If the sum of the two terms is > 1 we are outside the ellipse, otherwise inside it
+   if (compVal > 1) {
+    return outside;
+   } else {
+    return inside;
+   }
+}
 

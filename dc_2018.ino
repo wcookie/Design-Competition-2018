@@ -39,6 +39,12 @@ enum blockState {
   seen // We have locked in on a block that we're fairly confident is in that position
 };
 
+enum ellipseState {
+  // This says whether we are inside or outside of the ellipse
+  inside, // We are inside the ellipse
+  outside // We are outside the ellipse
+};
+
 enum searchState {
   // This is whether or not we are looking for blocks on the ellipse or
   // if we are just driving around scanning randomly
