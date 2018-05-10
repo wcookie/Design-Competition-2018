@@ -1,5 +1,4 @@
 // Tab for miscalleneous functions / utility
-#define CYLINDER_THRESHOLD 400 // If we are below this mark, we believe we are carrying a cylinder
 
 int currentSensorPin = 23; //A9
 int tripwirePin = 22; // A8
@@ -59,6 +58,7 @@ double readTripwire() {
 bool holdingBlock() {
   /*
    * Determines whether we are holding a block or not based on tripwire
+   * Might want to make this more robust ?? @JCohner
    */
    return (readTripwire() > tripwireThreshold);
 }

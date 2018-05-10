@@ -5,6 +5,8 @@
  * This (mostly) contains functions relating to driving, etc.
  */
 
+#define CYLINDER_THRESHOLD 400 // If we are below this mark, we believe we are carrying a cylinder
+
 
  // Motors pins
 
@@ -66,6 +68,32 @@ void determineBlockHolding(Robot& r) {
    * and thought it was cylinder, but still tripped and not reading cylinder, that we may still
    * want to consider us as having a cylinder.
    */
+   if (holdingBlock()) {
+    // We are holding a block determine which one it is
+    if (readCurrentSensor() < CYLINDER_THRESHOLD) {
+      // We are holding a cylinder, then determine whether that's our goal or not.
+      if (r.team == circle) {
+        // we are aiming for a cylinder
+        r.driving = holdingGoalBlock;
+      } else {
+        r.driving = holdingEnemyBlock;
+      }
+    } else {
+      // We have a cube
+      if (r.team == square) {
+        // We are aiming for a cube
+        r.driving = holdingGoalBlock;
+      } else {
+        r.driving = holdingEnemyBlock;
+      }
+    }
+   } else {
+    // We are not holding a block right now
+    // If we weren't a second ago, do not change state
+    // TODO:  add a function to check if we are near goal, if we are, then we can say we prob
+    // dropped it off.  If not, then we don't want to change our state unless this happens for a while
+    return;
+   }
    
 }
 
