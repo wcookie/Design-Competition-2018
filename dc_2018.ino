@@ -39,7 +39,7 @@ enum blockState {
   seen // We have locked in on a block that we're fairly confident is in that position
 };
 
-enum drivingState {
+enum searchState {
   // This is whether or not we are looking for blocks on the ellipse or
   // if we are just driving around scanning randomly
   ellipse, // We are looking for blocks around the ellipse,
@@ -53,6 +53,14 @@ enum attackState {
   // the square team
   scoring, // We are trying to score points
   defending // we are trying to limit the opponent's point total
+};
+
+enum drivingState {
+  // This will indicate what our robot is currently trying to accomplish
+  holdingGoalBlock, // Our robot has our desired block in our possession
+  holdingEnemyBlock, // Our robot has the enemie's block in our possession
+  movingTowardsBlock, // We are on our way to a block we detected
+  orienting // We are moving our robot in order to eventually move towards a block
 };
 
 // Our Structs
@@ -116,11 +124,12 @@ struct Robot {
   // 180 directly to left, 90 directly straight, -90 directly down (this can change)
   goalType team;
   Block desiredBlock; 
-  drivingState driving;
+  searchState searching;
   attackState atk;
+  drivingState driving;
   Robot(Point p = Point(), double h = 0.0, goalType t = circle, Block b = Block(), 
-        drivingState d = ellipse, attackState a = scoring):
-          pos(p), heading(h), team(t), desiredBlock(b), driving(d), atk(a){}
+        searchState s = ellipse, attackState a = scoring, drivingState ds= orienting):
+          pos(p), heading(h), team(t), desiredBlock(b), searching(s), atk(a), driving(ds){}
   
 };
 
@@ -152,10 +161,13 @@ void setup() {
   currentSensorSetup();
   viveSetup();
   // set up our phoenix robot based on what we have.
-  phoenix = Robot(Point(), 0.0, getTeam(), Block(), ellipse, getAttackState());
+  phoenix = Robot(Point(), 0.0, getTeam(), Block(), ellipse, getAttackState(), orienting);
 }
 
 void loop() { 
+  // First update our robot's position and direction
+  setRobotPositionAndDirection(phoenix);
+  
   moveMotors(70, 1, 70, 1);
   Serial.print("Current:");
   Serial.println(readCurrentSensor());
