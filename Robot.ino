@@ -47,6 +47,19 @@ attackState getAttackState() {
    }
 }
 
+void setRobotPositionAndDirection(Robot& r) {
+  /*
+   * Takes in a robot and sets its position and heading by calling the vive sensors code
+   */
+   RawViveData rvd = readViveSensors();
+   r.heading = rvd.heading;
+   // this averages the x values from the two sensors.
+   double rawXCenter = (rvd.v1LightPoint.x + rvd.v2LightPoint.x) / 2;
+   double rawYCenter = (rvd.v1LightPoint.y + rvd.v2LightPoint.y) / 2;
+   r.pos = physicalPointToVirtualPoint(LightPoint(rawXCenter, rawYCenter));
+}
+
+
 void motorSetup() {
   /*
    * Sets the motor pins to OUTPUT
