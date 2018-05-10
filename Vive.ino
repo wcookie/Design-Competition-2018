@@ -49,19 +49,31 @@ RawViveData readViveSensors() {
 }
 
 void printRawVivePositions() {
-    Serial.print("V1: ");
+  Serial.print("Physical V1: ");
   Serial.print(xPos1);
   Serial.print(", ");
   Serial.println(yPos1);
-  Serial.print("V2: ");
+  Serial.print("Physical V2: ");
   Serial.print(xPos2);
   Serial.print(", ");
   Serial.println(yPos2);
 }
 
+void printVirtualPositions(Point virtual1, Point virtual2, double heading) {
+  Serial.print("Virtual V1: ");
+  Serial.print(virtual1.x);
+  Serial.print(", ");
+  Serial.println(virtual1.y);
+  Serial.print("Virtual V2: ");
+  Serial.print(virtual2.x);
+  Serial.print(", ");
+  Serial.println(virtual2.y);
+  Serial.print("Heading: ");
+  Serial.println(heading);
+}
 
 
-
+//Interrupts:
 
 void ISRVive1() {
   // get the time the interrupt occured

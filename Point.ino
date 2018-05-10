@@ -15,10 +15,10 @@ double Y_COORD_RANGE = 60;
  * Left/right /up and down is defined from looking from the Design Competition sign perspective
  */
 
-LightPoint bottomLeftCorner = LightPoint(-4.0, -2.4); 
-LightPoint bottomRightCorner = LightPoint(-4.0, 2.4);
-LightPoint topLeftCorner = LightPoint(4.0, -2.4);
-LightPoint topRightCorner = LightPoint(4.0, 2.4);
+LightPoint topLeftCorner = LightPoint(-1.26, 3.20); 
+LightPoint bottomLeftCorner = LightPoint(1.36, -3.17);
+LightPoint topRightCorner = LightPoint(14.50, 3.60);
+LightPoint bottomRightCorner = LightPoint(15.4, -1.6);
 
 
 Point physicalPointToVirtualPoint(LightPoint lp) {
@@ -36,8 +36,8 @@ Point physicalPointToVirtualPoint(LightPoint lp) {
  double yDiff = topY - bottomY;
  double xProp = X_COORD_RANGE / xDiff;
  double yProp = Y_COORD_RANGE / yDiff;
- double virtualX = xProp * lp.x + (X_COORD_RANGE / 2);
- double virtualY = yProp * lp.y + (Y_COORD_RANGE / 2);
+ double virtualX = xProp * lp.x; // + (X_COORD_RANGE / 2);
+ double virtualY = yProp * lp.y; // + (Y_COORD_RANGE / 2);
  return Point(virtualX, virtualY);
 }
 

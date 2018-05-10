@@ -3,7 +3,7 @@
 // For Vive:
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#define Vive1PIN 2// the signal from the FRONT sensor
+#define Vive1PIN 2 // the signal from the FRONT sensor
 #define Vive2PIN 3 // the signal from the BACK sensor
 #define DEG_PER_US 0.0216 // equal to (180 deg) / (8333 us)
 #define DEG_TO_RADIAN 0.0174533 // pi/180
@@ -159,9 +159,12 @@ void loop() {
   moveMotors(70, 1, 70, 1);
   Serial.print("Current:");
   Serial.println(readCurrentSensor());
-  readViveSensors();
+  RawViveData rvd = readViveSensors();
   printRawVivePositions();
-  delay(1000);
+  printVirtualPositions(physicalPointToVirtualPoint(rvd.v1LightPoint),
+                        physicalPointToVirtualPoint(rvd.v2LightPoint),
+                        rvd.heading);
+  delay(500);
   
 }
 
