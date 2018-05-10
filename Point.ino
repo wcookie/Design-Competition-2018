@@ -36,8 +36,8 @@ Point physicalPointToVirtualPoint(LightPoint lp) {
  double yDiff = topY - bottomY;
  double xProp = X_COORD_RANGE / xDiff;
  double yProp = Y_COORD_RANGE / yDiff;
- double virtualX = xProp * lp.x; // + (X_COORD_RANGE / 2);
- double virtualY = yProp * lp.y; // + (Y_COORD_RANGE / 2);
+ double virtualX = xProp * (lp.x - leftX); // 
+ double virtualY = yProp * (lp.y - bottomY); // 
  return Point(virtualX, virtualY);
 }
 
