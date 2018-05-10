@@ -17,7 +17,7 @@ double Y_COORD_RANGE = 60;
 
 // Physical addresses of corners
 LightPoint topLeftCorner = LightPoint(-1.26, 3.20); 
-LightPoint bottomLeftCorner = LightPoint(1.36, -3.17);
+LightPoint bottomLeftCorner = LightPoint(0.49, -3.17);
 LightPoint topRightCorner = LightPoint(14.50, 3.60);
 LightPoint bottomRightCorner = LightPoint(15.4, -1.6);
 

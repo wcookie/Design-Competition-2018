@@ -97,6 +97,16 @@ void determineBlockHolding(Robot& r) {
    
 }
 
+double blockDeterminingHeuristic(Block b, Robot& r) {
+  /*
+   * This determines the quality of a block, given whether or robot is inside or outside
+   * Returns a value, which is a huge part of our robot design
+   * TODO: Add a timer to not call this for 10 seconds or so to give us ample time to go for a block
+   */
+
+}
+
+
 void motorSetup() {
   /*
    * Sets the motor pins to OUTPUT

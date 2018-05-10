@@ -1,9 +1,12 @@
 //Square comes before in arguments
 
-Square Squares[] = {Square(Point(1.0, 2.0), 5.0),
-                    Square(Point(5.0, -4.0), 5.0),
-                    Square(Point(2.0, 0.0), 5.0)
+Square Squares[] = {Square(Point(1.0, 2.0), 5.0), // Outer
+                    Square(Point(5.0, -4.0), 5.0), // Inner
+                    Square(Point(2.0, 0.0), 5.0) // Outer
 };
+
+Square innerSquare = Squares[1];
+Square outerSquares[] = {Squares[0], Squares[2]};
 
 Square findNearestSquare(Point p) {
   /*
@@ -32,3 +35,14 @@ Point findNearestEdge(Square s, Point p) {
    return findNearestEdge(Circle(s.center, cornerDist), p);
 }
 
+/*
+Square bestGoal(Block b, Robot r) {
+  /*
+   * This will find the best square goal to go to, depending on 
+   * whether we are outside or inside, and then determining on distance
+   
+   if (robotEllipseState(r) == inside) {
+    // If our robot is inside we want to bring it outside
+   }
+}
+*/

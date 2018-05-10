@@ -129,7 +129,7 @@ bool readingBlock(bool debug) {
 }
 
 
-void printDebugging() {
+void printDebugging(Robot r) {
   /*
    * Prints all debugging information
    */
@@ -140,5 +140,9 @@ void printDebugging() {
   printVirtualPositions(physicalPointToVirtualPoint(rvd.v1LightPoint),
                         physicalPointToVirtualPoint(rvd.v2LightPoint),
                         rvd.heading);
+  Serial.print("Robot Virtual Position: ");
+  Serial.print(r.pos.x);
+  Serial.print(", ");
+  Serial.println(r.pos.y);
 }
 

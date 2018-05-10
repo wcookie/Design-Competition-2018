@@ -1,10 +1,12 @@
 // Circle comes before Point in arguments 
 
-Circle Circles[] = {Circle(Point(1.0, 2.0), 5.0),
-                    Circle(Point(5.0, -4.0), 5.0),
-                    Circle(Point(2.0, 0.0), 5.0)
+Circle Circles[] = {Circle(Point(1.0, 2.0), 5.0), // Outer
+                    Circle(Point(5.0, -4.0), 5.0), // Inner
+                    Circle(Point(2.0, 0.0), 5.0) // Outer
 };
 
+Circle innerCircle = Circles[1];
+Circle outerCircles[] = {Circles[0], Circles[2]};
 
 Circle findNearestCircle(Point p) {
   /*

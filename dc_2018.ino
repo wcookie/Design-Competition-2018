@@ -175,8 +175,8 @@ void loop() {
   // First update our robot's position and direction
   setRobotPositionAndDirection(phoenix);
   determineBlockHolding(phoenix);
-  printDebugging();
-  readingBlock(true);
+  printDebugging(phoenix);
+  //readingBlock(false);
   moveMotors(70, 1, 70, 1);
   delay(250);
   
