@@ -57,10 +57,10 @@ enum attackState {
 
 enum drivingState {
   // This will indicate what our robot is currently trying to accomplish
-  holdingGoalBlock, // Our robot has our desired block in our possession
-  holdingEnemyBlock, // Our robot has the enemie's block in our possession
-  movingTowardsBlock, // We are on our way to a block we detected
-  orienting // We are moving our robot in order to eventually move towards a block
+  holdingGoalBlock, // Our robot has our desired block in our possession; MOVE TO GOAL
+  holdingEnemyBlock, // Our robot has the enemy's block in our possession; Discard it
+  movingTowardsBlock, // We are on our way to a block we detected; stay locked in
+  orienting // We are moving our robot in order to eventually move towards a block; orient
 };
 
 // Our Structs
@@ -159,6 +159,7 @@ void setup() {
   Serial.begin(9600);
   motorSetup();
   currentSensorSetup();
+  tripwireSetup();
   viveSetup();
   // set up our phoenix robot based on what we have.
   phoenix = Robot(Point(), 0.0, getTeam(), Block(), ellipse, getAttackState(), orienting);

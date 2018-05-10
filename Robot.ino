@@ -59,6 +59,15 @@ void setRobotPositionAndDirection(Robot& r) {
    r.pos = physicalPointToVirtualPoint(LightPoint(rawXCenter, rawYCenter));
 }
 
+void determineBlockHolding(Robot& r) {
+  /*
+   * Takes in a robot, and checks tripwire and current sensor to determine block fit
+   * Right now just does exact calculation, might want to say if we were tripped last time 
+   * and thought it was cylinder, but still tripped and not reading cylinder, that we may still
+   * want to consider us as having a cylinder.
+   */
+   
+}
 
 void motorSetup() {
   /*
