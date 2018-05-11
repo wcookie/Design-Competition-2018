@@ -171,6 +171,17 @@ Point desiredOrientationPointStraight(Robot r, Block b, Point goal) {
    * further along the line just to avoid turning and fucking with the block
    * Also make sure it's not too close to the edge
    */
+   double distRobotCenter = distance(r.pos, goal); 
+   double distRobotBlock = distance(r.pos, b.pos); 
+   double distBlockCenter = distance(b.pos, goal);
    
+   double angleRobotCenterBlock = acos(((-(sq(distRobotBlock))) + sq(distRobotCenter) + sq(distBlockCenter))/(2 * (distRobotBlock) * (distBlockCenter)));
+
+   double distRobotDesired = distRobotCenter * sin(angleRobotCenterBlock);
+   double distCenterDesired = distRobotCenter * cos(angleRobotCenterBlock);
+
+   Point desiredPoint = Point((r.pos.x + distRobotDesired), (goal.y - distCenterDesired));
+
+   return desiredPoint;
 }
 
