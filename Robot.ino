@@ -7,6 +7,13 @@
 
 #define CYLINDER_THRESHOLD 400 // If we are below this mark, we believe we are carrying a cylinder
 
+// Speeds
+#define STANDARD_SPEED 100
+#define SMALLER_SPEED 60
+#define TURNING_SPEED 70
+#define CUBE_SPEED 110
+#define CYLINDER_SPEED 150
+
 
  // Motors pins
 
@@ -125,6 +132,67 @@ void determineRobotState(Robot& r) {
    r.driving = orienting; 
 }
 
+void dropOffBlock(Robot r) {
+  /*
+   * For when we are holding our goal block.
+   * Goes straight to the goal, checks for when we are by the center of the goal, 
+   * then stops, backs up, determines new block, switches mode to orienting
+   */
+   bool inGoal = false;
+   if (r.team == circle) {
+    inGoal = inCircleGoal(r);
+   } else {
+    inGoal = inSquareGoal(r);
+   }
+   if (inGoal) {
+    // What we're doing if we are in the goal
+    // Back up for 2.5 seconds
+    backUpRoutine(2500);
+    // Determine our next block
+    r.desiredBlock = determineBestBlock(r);
+    // Turn motors off
+    turnMotorsOff();
+    // Set mode to orienting
+    r.driving = orienting;
+    // Finish
+    return;
+   }
+   // If we aren't in the goal, drive straight.
+   // TODO: Adjust our driving angle if it's off.
+   // TODO: Make sure we are still carrying the block.
+   if (r.team == circle) {
+    moveMotors(CYLINDER_SPEED, HIGH, CYLINDER_SPEED, HIGH);
+   } else {
+    moveMotors(CUBE_SPEED, HIGH, CUBE_SPEED, HIGH);
+   }
+}
+
+void discardEnemyBlock(Robot r) {
+  /*
+   * Discards Enemy block
+   */
+}
+
+void moveTowardsBlock(Robot r) {
+  /*
+   * Moves towards a block
+   */
+}
+
+void orientRobot(Robot r) {
+  /*
+   * Does all of our orienting stuff
+   */
+}
+
+void backUpRoutine(int t) {
+  /*
+   * Our routine that goes backwards slowly for some time t
+   */
+  moveMotors(SMALLER_SPEED, -1, SMALLER_SPEED, -1);
+  delay(t);
+}
+
 void motorSetup() {
   /*
    * Sets the motor pins to OUTPUT
@@ -135,14 +203,21 @@ void motorSetup() {
   pinMode(rightDIR, OUTPUT);
 }
 
- void moveMotors(int leftSpeed, bool leftDirection, int rightSpeed, bool rightDirection) {
+void turnMotorsOff() {
   /*
-   * moves motors based on given left/right speed and direction
-   * True is forwards for direction, False is backwards
-   * speeds go between 0 and 255
+   * Turns off motors
    */
-  analogWrite(leftPWM, leftSpeed);
-  digitalWrite(leftDIR, leftDirection);
-  analogWrite(rightPWM, rightSpeed);
-  digitalWrite(rightDIR, rightDirection);
+  moveMotors(0, HIGH, 0, HIGH);
+}
+
+void moveMotors(int leftSpeed, bool leftDirection, int rightSpeed, bool rightDirection) {
+ /*
+  * moves motors based on given left/right speed and direction
+  * True is forwards for direction, False is backwards
+  * speeds go between 0 and 255
+  */
+ analogWrite(leftPWM, leftSpeed);
+ digitalWrite(leftDIR, leftDirection);
+ analogWrite(rightPWM, rightSpeed);
+ digitalWrite(rightDIR, rightDirection);
 }

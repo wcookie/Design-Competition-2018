@@ -9,6 +9,10 @@
 #define DEG_TO_RADIAN 0.0174533 // pi/180
 #define LIGHTHOUSEHEIGHT 3.5 // in feet
 #define LIGHTHOUSEANGLE 30 // in degrees
+
+
+// Center of block leeway 
+#define GOAL_LEEWAY 2.5 // in virtual coordinates
 /*
  * Code is for Design Competition 2018
  * All code and strategy written by
@@ -177,11 +181,21 @@ void setup() {
 }
 
 void loop() { 
+
+  // THINGS WE DO REGARDLESS OF STATE
   // First update our robot's position and direction
   setRobotPositionAndDirection(phoenix);
   determineRobotState(phoenix);
   printDebugging(phoenix);
   //readingBlock(false);
+
+  // SWITCH ON STATE
+  switch(phoenix.driving) {
+    case holdingGoalBlock: dropOffBlock(phoenix);
+    case holdingEnemyBlock: discardEnemyBlock(phoenix);
+    case movingTowardsBlock: moveTowardsBlock(phoenix);
+    case orienting: orientRobot(phoenix);
+  }
   moveMotors(70, 1, 70, 1);
   delay(250);
   

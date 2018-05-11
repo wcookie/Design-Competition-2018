@@ -60,3 +60,18 @@ Square findBestSquareGoal(Block b, Robot r) {
    return bestGoal;
 }
 
+bool inSquareGoal(Robot r) {
+  /*
+   * Checks to see if we are by the center of a circle goal (has some leeway)
+   */
+   for (int i = 0; i < 3; ++i) {
+    Square s = Squares[i];
+    // If we're fairly close to center return true
+    if (distance(s.center, r.pos) < GOAL_LEEWAY) {
+      return true;
+    }
+   }
+   // If we were never that close, return false
+   return false;
+}
+
