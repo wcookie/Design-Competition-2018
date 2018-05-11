@@ -4,7 +4,6 @@
  * One thing we may add is whether we are an attack our defense robot.  
  * This (mostly) contains functions relating to driving, etc.
  */
-
 #define CYLINDER_THRESHOLD 400 // If we are below this mark, we believe we are carrying a cylinder
 
 // Speeds
@@ -13,6 +12,8 @@
 #define TURNING_SPEED 70
 #define CUBE_SPEED 110
 #define CYLINDER_SPEED 150
+
+long long lastSeenBlock = 0; // Used to help us determine if we are seeing a block
 
 
  // Motors pins
@@ -25,6 +26,13 @@
  int teamSwitchD = 12; // Switch to tell us which team we're on //TBD
  int attackSwitchD = 13; // Switch to tell us if we're scoring or defending //TBD
 
+
+void lastSeenSetup() {
+  /*
+   * Sets the last time we saw a block to be millis
+   */
+   lastSeenBlock = millis();
+}
 
 goalType getTeam() {
   /*
@@ -176,7 +184,11 @@ void discardEnemyBlock(Robot r) {
 void moveTowardsBlock(Robot r) {
   /*
    * Moves towards a block.  
-   * This should only trigger if we are facing the block.
+   * This should only trigger if we are somewhat facing the block.
+   * First, check if we are reading the block.  
+   * If we are, move straight.
+   * If we aren't, turn side to side slightly until we see it again. 
+   * TODO: Add a timer to just give up on this block and determine it to be not there.
    * Once we get the block, 
    * if we have goal block and plan on going straight to the goal, end in holdingGoalBlock mode
    * if we have goal block and plan on orienting more, end in orientingWithBlock mode

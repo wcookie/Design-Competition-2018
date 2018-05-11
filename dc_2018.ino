@@ -176,6 +176,7 @@ void setup() {
   currentSensorSetup();
   lasersSetup();
   viveSetup();
+  lastSeenSetup();
   // set up our phoenix robot based on what we have.
   // Normally circle is getTeam()
   phoenix = Robot(Point(), 0.0, circle, Block(), ellipse, getAttackState(), orienting, Point());
