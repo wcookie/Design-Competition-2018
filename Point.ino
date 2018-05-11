@@ -148,3 +148,29 @@ double desiredAngle(Robot r, Point p) {
    return atan2(yDiff, xDiff);
 }
 
+Point desiredOrientationPointStraight(Robot r, Block b, Point goal) {
+  /*
+   * For our orienting mode, this tells us where to drive to before we rotate to go straight to the block to the goal
+   * This only is for the blocks we want to drive straight to the goal, without moving somewhere first and then rotating
+   * look at desiredOrientationPointStepped for orienting to get our block to move off the board first then to our goal
+   * 
+   * JCohner: Please fucking sanity check this with me I feel like i went off the deep end here.
+   * 
+   * Calculations:
+   * 
+   * First calculate the angle from the desired goal to the block.  
+   * Then basically extend this by steps of .25 in the x direction.  
+   * 
+   * For now: Say that when the point is not too close to the block and too close to the edge just go there 
+   * 
+   * TODO: 
+   * Then calculate angle difference between
+   * our robot and the block of this part, and when it is close to 90 degrees (Pi/2 radians) 
+   * then we say we have our desired point to go to.
+   * TODO: If the desired point is too close to the block, move a little bit 
+   * further along the line just to avoid turning and fucking with the block
+   * Also make sure it's not too close to the edge
+   */
+   
+}
+
