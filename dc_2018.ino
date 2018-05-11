@@ -3,8 +3,8 @@
 // For Vive:
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#define Vive1PIN 4 // the signal from the FRONT sensor
-#define Vive2PIN 5 // the signal from the BACK sensor
+#define Vive1PIN 14 // the signal from the FRONT sensor
+#define Vive2PIN 15 // the signal from the BACK sensor
 #define DEG_PER_US 0.0216 // equal to (180 deg) / (8333 us)
 #define DEG_TO_RADIAN 0.0174533 // pi/180
 #define LIGHTHOUSEHEIGHT 3.5 // in feet

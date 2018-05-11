@@ -35,14 +35,28 @@ Point findNearestEdge(Square s, Point p) {
    return findNearestEdge(Circle(s.center, cornerDist), p);
 }
 
-/*
-Square bestGoal(Block b, Robot r) {
+
+Square bestSquareGoal(Block b, Robot r) {
   /*
    * This will find the best square goal to go to, depending on 
    * whether we are outside or inside, and then determining on distance
-   
+   */
+   Square bestGoal;
+   double minDistance = 1000.0;
    if (robotEllipseState(r) == inside) {
     // If our robot is inside we want to bring it outside
+    for (int i = 0; i < 2; ++i) {
+      double blockDistance = distance(outerSquares[i].center, b.pos);
+      if (blockDistance < minDistance) {
+        minDistance = blockDistance;
+        bestGoal = outerSquares[i];
+      }
+    }
+   } else {
+    // Our robot is outside, so we want to check it inside, basically just return
+    // The only inside goal
+    bestGoal = innerSquare;
    }
+   return bestGoal;
 }
-*/
+
