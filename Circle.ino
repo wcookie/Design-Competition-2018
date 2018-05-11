@@ -1,8 +1,8 @@
 // Circle comes before Point in arguments 
 
-Circle Circles[] = {Circle(Point(1.0, 2.0), 5.0), // Outer
-                    Circle(Point(5.0, -4.0), 5.0), // Inner
-                    Circle(Point(2.0, 0.0), 5.0) // Outer
+Circle Circles[] = {Circle(Point(6.1, 49.0), 5.0), // Outer
+                    Circle(Point(30.5, 30.75), 5.0), // Inner
+                    Circle(Point(100.0, 11), 5.0) // Outer
 };
 
 Circle innerCircle = Circles[1];

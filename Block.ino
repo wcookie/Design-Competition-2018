@@ -15,9 +15,9 @@ struct Block {
  */
 
 
-Block cylinders[] = {Block(Point(1.0, 2.0), cylinder, unknown),
-                     Block(Point(2.0, 3.0), cylinder, unknown),
-                     Block(Point(2.0, 3.0), cylinder, unknown),
+Block cylinders[] = {Block(Point(21.8, 44.4), cylinder, unknown),
+                     Block(Point(10.1, 38.5), cylinder, unknown),
+                     Block(Point(6.7, 27.30), cylinder, unknown),
                      Block(Point(2.0, 3.0), cylinder, unknown),
                      Block(Point(2.0, 3.0), cylinder, unknown),
                      Block(Point(2.0, 3.0), cylinder, unknown),
@@ -29,20 +29,38 @@ Block cylinders[] = {Block(Point(1.0, 2.0), cylinder, unknown),
                      Block(Point(2.0, 3.0), cylinder, unknown)};
                      
 
-Block cubes[] = {Block(Point(1.0, 2.0), cube, unknown),
-                 Block(Point(2.0, 3.0), cube, unknown),
-                 Block(Point(2.0, 3.0), cube, unknown),
-                 Block(Point(2.0, 3.0), cube, unknown),
-                 Block(Point(2.0, 3.0), cube, unknown),
-                 Block(Point(2.0, 3.0), cube, unknown),
-                 Block(Point(2.0, 3.0), cube, unknown),
-                 Block(Point(2.0, 3.0), cube, unknown),
-                 Block(Point(2.0, 3.0), cube, unknown),
-                 Block(Point(2.0, 3.0), cube, unknown),
-                 Block(Point(2.0, 3.0), cube, unknown),
-                 Block(Point(2.0, 3.0), cube, unknown)};
+Block cubes[] = {Block(Point(21.80, 44.4), cube, unknown),
+                 Block(Point(10.1, 38.5), cube, unknown),
+                 Block(Point(6.7, 27.30), cube, unknown),
+                 Block(Point(142.0, 3.0), cube, unknown),
+                 Block(Point(142.0, 3.0), cube, unknown),
+                 Block(Point(142.0, 3.0), cube, unknown),
+                 Block(Point(142.0, 3.0), cube, unknown),
+                 Block(Point(142.0, 3.0), cube, unknown),
+                 Block(Point(142.0, 3.0), cube, unknown),
+                 Block(Point(142.0, 3.0), cube, unknown),
+                 Block(Point(142.0, 3.0), cube, unknown),
+                 Block(Point(142.0, 3.0), cube, unknown)};
 
 
+Block determineBestBlock(Robot& r) {
+  Block bestBlock;
+  double minHeuristic = 100000;
+  for (int i = 0; i < 12; ++i) {
+    Block b;
+    if (r.team == circle) {
+      b = cylinders[i];
+    } else {
+      b = cubes[i];
+    }
+    double tempHeuristic = blockDeterminingHeuristic(b, r);
+    if (tempHeuristic < minHeuristic) {
+      bestBlock = b;
+      minHeuristic = tempHeuristic;
+    }
+  }
+  return bestBlock;
+}
 
 double blockDeterminingHeuristic(Block b, Robot& r) {
   /*

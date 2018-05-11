@@ -129,14 +129,17 @@ struct Robot {
   double heading; // the direction our robot is facing.
   // Heading goes from 0 to 360, 0 is facing directly to the right of our orientation,
   // 180 directly to left, 90 directly straight, -90 directly down (this can change)
-  goalType team;
-  Block desiredBlock; 
-  searchState searching;
-  attackState atk;
-  drivingState driving;
+  goalType team; // which team we are on
+  Block desiredBlock; // The block we want (useful for orienting and moving towards block)
+  searchState searching; // whether we are still on the ellipse or not
+  attackState atk; // whether we are attacking or defending
+  drivingState driving; // our driving state (whether we are going to block, etc.)
+  Point goalPos; // This is mostly relevant for orienting
   Robot(Point p = Point(), double h = 0.0, goalType t = circle, Block b = Block(), 
-        searchState s = ellipse, attackState a = scoring, drivingState ds= orienting):
-          pos(p), heading(h), team(t), desiredBlock(b), searching(s), atk(a), driving(ds){}
+        searchState s = ellipse, attackState a = scoring, 
+        drivingState ds= orienting, Point gp = Point()):
+          pos(p), heading(h), team(t), desiredBlock(b), searching(s),
+          atk(a), driving(ds), goalPos(gp){}
   
 };
 
@@ -169,7 +172,8 @@ void setup() {
   lasersSetup();
   viveSetup();
   // set up our phoenix robot based on what we have.
-  phoenix = Robot(Point(), 0.0, getTeam(), Block(), ellipse, getAttackState(), orienting);
+  // Normally circle is getTeam()
+  phoenix = Robot(Point(), 0.0, circle, Block(), ellipse, getAttackState(), orienting, Point());
 }
 
 void loop() { 

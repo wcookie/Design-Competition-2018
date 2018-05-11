@@ -143,12 +143,40 @@ bool readingBlock(bool debug) {
 }
 
 void printInEllipse(Robot r) {
+  /*
+   * Prints whether or not our robot is in the ellipse
+   */
   Serial.print("Robot is ");
   if (robotEllipseState(r) == inside) {
     Serial.println("Inside the ellipse");
   } else {
     Serial.println("Outside the ellipse");
   }
+}
+
+void printRobotState(Robot r) {
+  /*
+   * Prints out the state of our robot
+   */
+   Serial.print("Robot State: ");
+   switch(r.driving) {
+    case holdingGoalBlock: Serial.println("Holding Goal block");
+    case holdingEnemyBlock: Serial.println("Holding Enemy block");
+    case movingTowardsBlock: Serial.println("Moving Towards block");
+    case orienting: Serial.println("Orienting");
+    case other: Serial.println("Other");
+   }
+}
+
+void printBestBlock(Robot r) {
+  /*
+   * Prints out R's best block from the heuristic
+   */
+   Serial.print("Best Block x, y: ");
+   Block b = determineBestBlock(r);
+   Serial.print(b.pos.x);
+   Serial.print(", ");
+   Serial.println(b.pos.y);
 }
 
 void printDebugging(Robot r) {
@@ -167,5 +195,7 @@ void printDebugging(Robot r) {
   Serial.print(", ");
   Serial.println(r.pos.y);
   printInEllipse(r);
+  printRobotState(r);
+  printBestBlock(r);
 }
 
