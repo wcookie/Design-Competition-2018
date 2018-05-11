@@ -3,8 +3,8 @@
 // For Vive:
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#define Vive1PIN 15 // the signal from the FRONT sensor
-#define Vive2PIN 16 // the signal from the BACK sensor
+#define Vive1PIN 22 // the signal from the FRONT sensor
+#define Vive2PIN 23 // the signal from the BACK sensor
 #define DEG_PER_US 0.0216 // equal to (180 deg) / (8333 us)
 #define DEG_TO_RADIAN 0.0174533 // pi/180
 #define LIGHTHOUSEHEIGHT 3.5 // in feet
@@ -71,6 +71,7 @@ enum drivingState {
   holdingEnemyBlock, // Our robot has the enemy's block in our possession; Discard it
   movingTowardsBlock, // We are on our way to a block we detected; stay locked in
   orienting, // We are moving our robot in order to eventually move towards a block; orient
+  orientingWithBlock, // This is if we are holding a block and aren't ready to go straight to the goal yet.
   other
 };
 
@@ -195,6 +196,7 @@ void loop() {
     case holdingEnemyBlock: discardEnemyBlock(phoenix);
     case movingTowardsBlock: moveTowardsBlock(phoenix);
     case orienting: orientRobot(phoenix);
+    case orientingWithBlock: orientWithBlock(phoenix);
   }
   moveMotors(70, 1, 70, 1);
   delay(250);

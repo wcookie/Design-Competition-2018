@@ -156,6 +156,7 @@ void printRobotState(Robot r) {
     case holdingEnemyBlock: Serial.println("Holding Enemy block");
     case movingTowardsBlock: Serial.println("Moving Towards block");
     case orienting: Serial.println("Orienting");
+    case orientingWithBlock: Serial.println("Orienting with Block");
     case other: Serial.println("Other");
    }
 }

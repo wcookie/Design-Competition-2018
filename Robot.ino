@@ -175,13 +175,29 @@ void discardEnemyBlock(Robot r) {
 
 void moveTowardsBlock(Robot r) {
   /*
-   * Moves towards a block
+   * Moves towards a block.  
+   * This should only trigger if we are facing the block.
+   * Once we get the block, 
+   * if we have goal block and plan on going straight to the goal, end in holdingGoalBlock mode
+   * if we have goal block and plan on orienting more, end in orientingWithBlock mode
+   * If we have enemy block, end in holdingEnemyBlock mode.
    */
 }
 
 void orientRobot(Robot r) {
   /*
-   * Does all of our orienting stuff
+   * Does several steps.  First determines where to go to move block.
+   * Then rotates towards this point.
+   * Then drives there.  Then rotates towards the block.
+   * Then enters movingTowardsBlock state.
+   */
+}
+
+void orientWithBlock(Robot r) {
+  /*
+   * This orients the robot if we already have the block 
+   * so that we can face straight towards a goal.
+   * Ends in holdingGoalBlock mode
    */
 }
 
