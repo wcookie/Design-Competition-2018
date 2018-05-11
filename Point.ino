@@ -125,6 +125,9 @@ ellipseState robotEllipseState(Robot r) {
 
 
 double distance(Point p1, Point p2) {
+  /*
+   * Calculates distance between two points
+   */
   double xDiff = p1.x - p2.x;
   xDiff *= xDiff;
   double yDiff = p1.y - p2.y;
@@ -132,4 +135,16 @@ double distance(Point p1, Point p2) {
   return sqrt(xDiff + yDiff);
 }
 
+double desiredAngle(Robot r, Point p) {
+  /*
+   * Finds the angle we want to drive straight to a point.
+   * Takes in a robot, and the desired point.
+   * Note: Everythign is in radians
+   * TODO (JCohner): Figure out solution to how the angle can go from slightly under -Pi to slightly under Pi in such a quick step. 
+   * (see readViveSensors in Vive.ino)
+   */
+   double yDiff = p.y - r.pos.y;
+   double xDiff = p.x - r.pos.x;
+   return atan2(yDiff, xDiff);
+}
 

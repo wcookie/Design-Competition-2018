@@ -21,6 +21,12 @@ void viveSetup() {
 
 
 RawViveData readViveSensors() {
+  /*
+   * Reads vive sensors from nick's code.
+   * Also calculates our heading (note: in radians)
+   * TODO (JCohner): Figure out solution to how the angle can go from slightly under -Pi to slightly under Pi in such a quick step.
+   * (see desiredAngle in Point.ino)
+   */
   if (V1.useMe == 1) {
     V1.useMe = 0;
     // calculate the position and filter it
