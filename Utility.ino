@@ -1,9 +1,10 @@
 // Tab for miscalleneous functions / utility
 #define BLOCK_LASER_THRESHOLD 6 // If the difference is above this we see a block
 
-int currentSensorPin = 23; //A9
+int currentSensorPin1 = 14; // A0
+int currentSensorPin2 = 15; // A1
 int tripwirePin = 22; // A8
-int blockPTPin = 15; // A1
+int blockPTPin = 16; // A2
 int blockLaserPin3 = 11;
 int blockLaserPin2 = 10;
 int blockLaserPin1 = 9;
@@ -20,7 +21,8 @@ double distance(Point p1, Point p2) {
 }
 
 void currentSensorSetup() {
-  pinMode(currentSensorPin, INPUT);
+  pinMode(currentSensorPin1, INPUT);
+  pinMode(currentSensorPin2, INPUT);
 }
 
 void lasersSetup() {
@@ -33,27 +35,39 @@ void lasersSetup() {
 
 double readCurrentSensor() {
   /*
-   * Gets the current sensor value
+   * Gets the current sensor values and averages them
    */
-   double sum = 0;
-   double counter = 0;
+   double sum1 = 0.0;
+   double sum2 = 0.0;
+   double counter1 = 0.0;
+   double counter2 = 0.0;
    for (int ii = 0; ii < 140; ++ii){
-    double sensorVal = analogRead(currentSensorPin);
-    if ((sensorVal > 50) && (sensorVal < 950)) {
-      counter += 1.0;
-      sum += sensorVal;
+    // First sensor, making sure the values are reasonable
+    double sensorVal1 = analogRead(currentSensorPin1);
+    if ((sensorVal1 > 50) && (sensorVal1 < 950)) {
+      counter1 += 1.0;
+      sum1 += sensorVal1;
+    }
+    // Second sensor, making sure the values are reasonable
+    double sensorVal2 = analogRead(currentSensorPin2);
+    if ((sensorVal2 > 50) && (sensorVal2 < 950)) {
+      counter2 += 1.0;
+      sum2 += sensorVal2;
     }
     delay(1);
    }
-   sum = sum / counter;
-   return sum;
+   // Dividing sums by the number of times
+   sum1 /= counter1;
+   sum2 /= counter2;
+   // Returning the average
+   return (sum1 + sum2) / 2.0;
 }
 
 double readCurrentSensorBasic() {
   /*
    * basic version of above
    */
-   return analogRead(currentSensorPin);
+   return (analogRead(currentSensorPin1) + analogRead(currentSensorPin2)) / 2.0;
 }
 
 double readTripwire() {

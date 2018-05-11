@@ -10,10 +10,10 @@
 
  // Motors pins
 
- int leftPWM = 21; // Left pwm pin
- int leftDIR = 17; // Left digital pins
- int rightPWM = 20; // Right pwm pin
- int rightDIR = 16; //Right digital pin
+ int leftPWM = 3; // Left pwm pin
+ int leftDIR = 2; // Left digital pins
+ int rightPWM = 6; // Right pwm pin
+ int rightDIR = 7; //Right digital pin
 
  int teamSwitchD = 12; // Switch to tell us which team we're on //TBD
  int attackSwitchD = 13; // Switch to tell us if we're scoring or defending //TBD
@@ -99,15 +99,6 @@ drivingState determineBlockHolding(Robot& r) {
     return other;
    }
    
-}
-
-double blockDeterminingHeuristic(Block b, Robot& r) {
-  /*
-   * This determines the quality of a block, given whether or robot is inside or outside
-   * Returns a value, which is a huge part of our robot design
-   * TODO: Add a timer to not call this for 10 seconds or so to give us ample time to go for a block
-   */
-
 }
 
 void determineRobotState(Robot& r) {

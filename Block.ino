@@ -40,5 +40,13 @@ Block cubes[] = {Block(Point(1.0, 2.0), cube, unknown),
 
 
 
+double blockDeterminingHeuristic(Block b, Robot& r) {
+  /*
+   * This determines the quality of a block, given whether or robot is inside or outside
+   * Returns a value, which is a huge part of our robot design
+   * TODO: Add a timer to not call this for 10 seconds or so to give us ample time to go for a block
+   */
+
+}
                  
                      
