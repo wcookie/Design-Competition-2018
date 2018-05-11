@@ -1,3 +1,7 @@
+#define BLOCK_TO_GOAL_COEFFICIENT .1
+#define BOT_TO_BLOCK_COEFFICIENT .2
+#define ROTATION_COEFFICIENT 5
+
 /*
  * 
 struct Block {
@@ -46,7 +50,14 @@ double blockDeterminingHeuristic(Block b, Robot& r) {
    * Returns a value, which is a huge part of our robot design
    * TODO: Add a timer to not call this for 10 seconds or so to give us ample time to go for a block
    */
-
+   double tempHeuristic = 0.0;
+   if(r.team == circle) {
+    tempHeuristic += (distance(findBestCircleGoal(b, r).center, b.pos)* BLOCK_TO_GOAL_COEFFICIENT);
+   } else {
+    tempHeuristic += (distance(findBestSquareGoal(b, r).center, b.pos) * BLOCK_TO_GOAL_COEFFICIENT);
+   }
+   tempHeuristic += (distance(b.pos, r.pos) * BOT_TO_BLOCK_COEFFICIENT);
+   return tempHeuristic;
 }
                  
                      

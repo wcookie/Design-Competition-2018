@@ -9,7 +9,7 @@ int blockLaserPin3 = 11;
 int blockLaserPin2 = 10;
 int blockLaserPin1 = 9;
 
-double  tripwireThreshold = 40; // If we are below this, we are tripped.  Maybe should be calibrated
+double tripwireThreshold = 40; // If we are below this, we are tripped.  Maybe should be calibrated
 
 
 double distance(Point p1, Point p2) {
@@ -142,6 +142,14 @@ bool readingBlock(bool debug) {
    return (lightAverage > (darkAverage + BLOCK_LASER_THRESHOLD));
 }
 
+void printInEllipse(Robot r) {
+  Serial.print("Robot is ");
+  if (robotEllipseState(r) == inside) {
+    Serial.println("Inside the ellipse");
+  } else {
+    Serial.println("Outside the ellipse");
+  }
+}
 
 void printDebugging(Robot r) {
   /*
@@ -158,5 +166,6 @@ void printDebugging(Robot r) {
   Serial.print(r.pos.x);
   Serial.print(", ");
   Serial.println(r.pos.y);
+  printInEllipse(r);
 }
 

@@ -36,7 +36,7 @@ Point findNearestEdge(Square s, Point p) {
 }
 
 
-Square bestSquareGoal(Block b, Robot r) {
+Square findBestSquareGoal(Block b, Robot r) {
   /*
    * This will find the best square goal to go to, depending on 
    * whether we are outside or inside, and then determining on distance

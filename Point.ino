@@ -16,15 +16,15 @@ double Y_COORD_RANGE = 60;
  */
 
 // Physical addresses of corners
-LightPoint topLeftCorner = LightPoint(-1.26, 3.20); 
-LightPoint bottomLeftCorner = LightPoint(0.49, -3.17);
-LightPoint topRightCorner = LightPoint(14.50, 3.60);
-LightPoint bottomRightCorner = LightPoint(15.4, -1.6);
+LightPoint topLeftCorner = LightPoint(.56, 4.4); 
+LightPoint bottomLeftCorner = LightPoint(0.53, -3.92);
+LightPoint topRightCorner = LightPoint(20.45, 4.82);
+LightPoint bottomRightCorner = LightPoint(22.05, -4.5);
 
 //Virtual address of ellipse center, plus virtual distance of radii
-Point center = Point(60, 30);
-double xRadius = 40; // TODO: MEASURE
-double yRadius = 25; // TODO: MEASURE
+Point center = Point(45.0, 30.5);
+double xRadius = 43; // TODO: MEASURE
+double yRadius = 19; // TODO: MEASURE
 
 
 Point physicalPointToVirtualPoint(LightPoint lp) {
