@@ -61,7 +61,7 @@ void setRobotPositionAndDirection(Robot& r) {
    r.pos = physicalPointToVirtualPoint(LightPoint(rawXCenter, rawYCenter));
 }
 
-void determineBlockHolding(Robot& r) {
+drivingState determineBlockHolding(Robot& r) {
   /*
    * Takes in a robot, and checks tripwire and current sensor to determine block fit
    * Right now just does exact calculation, might want to say if we were tripped last time 
@@ -75,16 +75,20 @@ void determineBlockHolding(Robot& r) {
       if (r.team == circle) {
         // we are aiming for a cylinder
         r.driving = holdingGoalBlock;
+        return holdingGoalBlock;
       } else {
         r.driving = holdingEnemyBlock;
+        return holdingEnemyBlock;
       }
     } else {
       // We have a cube
       if (r.team == square) {
         // We are aiming for a cube
         r.driving = holdingGoalBlock;
+        return holdingGoalBlock;
       } else {
         r.driving = holdingEnemyBlock;
+        return holdingEnemyBlock;
       }
     }
    } else {
@@ -92,7 +96,7 @@ void determineBlockHolding(Robot& r) {
     // If we weren't a second ago, do not change state
     // TODO:  add a function to check if we are near goal, if we are, then we can say we prob
     // dropped it off.  If not, then we don't want to change our state unless this happens for a while
-    return;
+    return other;
    }
    
 }
@@ -106,6 +110,29 @@ double blockDeterminingHeuristic(Block b, Robot& r) {
 
 }
 
+void determineRobotState(Robot& r) {
+  /*
+   * This function takes in a robot, and determines what it's state should be.
+   * State reminder: holding goal block, holding enemy block, moving towards block, orienting
+   */
+   // Our first priority is to see whether we are holding a block.  If we are, then we stop.
+   drivingState ds = determineBlockHolding(r);
+   if (ds != other) {
+    // If we found that we are holding enemy block or holding our goal block, we leave.
+    return; 
+   }
+   // Now we want to see if we are going towards a block
+   // TODO (JCohner): Include the line of sight we have bc of our angle and position, and make sure
+   // we are in the vicinity of pointing at our goal block.
+   if (readingBlock(false)) {
+    r.driving = movingTowardsBlock;
+    return;
+   }
+   // Now if we don't see a block we should be orienting.  
+   // TODO (JCohner): Add in our code that if we've been orienting for a bit (not tooo long)
+   // And we don't see anything that we should move on to a new block
+   r.driving = orienting; 
+}
 
 void motorSetup() {
   /*

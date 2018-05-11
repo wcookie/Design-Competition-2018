@@ -66,7 +66,8 @@ enum drivingState {
   holdingGoalBlock, // Our robot has our desired block in our possession; MOVE TO GOAL
   holdingEnemyBlock, // Our robot has the enemy's block in our possession; Discard it
   movingTowardsBlock, // We are on our way to a block we detected; stay locked in
-  orienting // We are moving our robot in order to eventually move towards a block; orient
+  orienting, // We are moving our robot in order to eventually move towards a block; orient
+  other
 };
 
 // Our Structs
@@ -174,7 +175,7 @@ void setup() {
 void loop() { 
   // First update our robot's position and direction
   setRobotPositionAndDirection(phoenix);
-  determineBlockHolding(phoenix);
+  determineRobotState(phoenix);
   printDebugging(phoenix);
   //readingBlock(false);
   moveMotors(70, 1, 70, 1);
