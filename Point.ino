@@ -16,15 +16,18 @@ double Y_COORD_RANGE = 60;
  */
 
 // Physical addresses of corners
-LightPoint topLeftCorner = LightPoint(.56, 4.4); 
-LightPoint bottomLeftCorner = LightPoint(0.53, -3.92);
-LightPoint topRightCorner = LightPoint(20.45, 4.82);
-LightPoint bottomRightCorner = LightPoint(22.05, -4.5);
+LightPoint topLeftCorner = LightPoint(.6, 4.0); 
+LightPoint bottomLeftCorner = LightPoint(0.77, -3.79);
+LightPoint topMiddle = LightPoint(7.5, 3.35);
+LightPoint bottomMiddle = LightPoint(8.63, -2.6);
+LightPoint topRightCorner = LightPoint(14.7, 4.05);
+LightPoint bottomRightCorner = LightPoint(16.3, -2.6);
 
 //Virtual address of ellipse center, plus virtual distance of radii
-Point center = Point(45.0, 30.5);
-double xRadius = 43; // TODO: MEASURE
-double yRadius = 19; // TODO: MEASURE
+Point center = Point(58.47, 30.7);
+double leftXRadius = 45.4; // TODO: MEASURE
+double rightXRadius = 49;
+double yRadius = 22; // TODO: MEASURE
 
 
 Point physicalPointToVirtualPoint(LightPoint lp) {
@@ -32,18 +35,48 @@ Point physicalPointToVirtualPoint(LightPoint lp) {
   * turns a physical point into our virtual coordinate plane.
   * calculates the physical ranges for x and Y and uses the proportion of the range verse
   * our virtual range.  Then throws that proportion onto our individual point.
-  * Maybe TODO: Make some of this a setup task that affects global variables
+  * Separates the board into a leeft half adn right half to try and make the virtual system closer to reality
   */
+  double midwayX = (topMiddle.x + bottomMiddle.x) / 2.0;
+  if (lp.x > midwayX) {
+    return rightVirtualConversion(lp);
+  } else {
+    return leftVirtualConversion(lp);
+  }
+  
+}
+
+Point leftVirtualConversion(LightPoint lp) {
+  /*
+   * Goes from 0 to half of X_COORD_Range for the left half of the board. 
+   */
  double leftX = (double)(bottomLeftCorner.x + topLeftCorner.x) / 2.0;
- double rightX = (double)(bottomRightCorner.x + topRightCorner.x) / 2.0;
- double topY = (double)(topLeftCorner.y + topRightCorner.y) / 2.0;
- double bottomY = (double)(bottomLeftCorner.y + bottomRightCorner.y) / 2.0;
+ double rightX = (double)(bottomMiddle.x + topMiddle.x) / 2.0;
+ double topY = (double)(topMiddle.y + topLeftCorner.y) / 2.0;
+ double bottomY = (double)(bottomLeftCorner.y + bottomMiddle.y) / 2.0;
  double xDiff = rightX - leftX;
  double yDiff = topY - bottomY;
- double xProp = X_COORD_RANGE / xDiff;
+ double xProp = (X_COORD_RANGE * .5) / xDiff;
  double yProp = Y_COORD_RANGE / yDiff;
- double virtualX = xProp * (lp.x - leftX); // 
- double virtualY = yProp * (lp.y - bottomY); // 
+ double virtualX = xProp * (lp.x - leftX);   // Goes from 0 to X_COORD_RANGE
+ double virtualY = yProp * (lp.y - bottomY); 
+ return Point(virtualX, virtualY);
+}
+
+Point rightVirtualConversion(LightPoint lp) {
+ /*
+  * Goes from 60 to X_COORD_RANGE for the right half of the board
+  */
+ double leftX = (double)(bottomMiddle.x + topMiddle.x) / 2.0;
+ double rightX = (double)(bottomRightCorner.x + topRightCorner.x) / 2.0;
+ double topY = (double)(topMiddle.y + topRightCorner.y) / 2.0;
+ double bottomY = (double)(bottomMiddle.y + bottomRightCorner.y) / 2.0;
+ double xDiff = rightX - leftX;
+ double yDiff = topY - bottomY;
+ double xProp = (X_COORD_RANGE * .5) / xDiff;
+ double yProp = Y_COORD_RANGE / yDiff;
+ double virtualX = (xProp * (lp.x - leftX)) + (X_COORD_RANGE * .5); // Goes from X_COORD_RANGE/2 to X_COORD_RANGE 
+ double virtualY = yProp * (lp.y - bottomY);
  return Point(virtualX, virtualY);
 }
 
@@ -73,7 +106,11 @@ ellipseState robotEllipseState(Robot r) {
    * https://math.stackexchange.com/questions/76457/check-if-a-point-is-within-an-ellipse
    */
    double xTerm = sq(r.pos.x - center.x);
-   xTerm /= sq(xRadius);
+   if (r.pos.x < 60) {
+    xTerm /= sq(leftXRadius);
+   } else {
+    xTerm /= sq(rightXRadius);
+   }
    double yTerm = sq(r.pos.y - center.y);
    yTerm /= sq(yRadius);
    double compVal = xTerm + yTerm;
