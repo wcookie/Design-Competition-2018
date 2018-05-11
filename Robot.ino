@@ -76,6 +76,13 @@ void setRobotPositionAndDirection(Robot& r) {
    r.pos = physicalPointToVirtualPoint(LightPoint(rawXCenter, rawYCenter));
 }
 
+blockType whatAreWeHolding(Robot r) {
+  /*
+   * Determines whether we are holding a cylinder or a cube.
+   */
+   
+}
+
 drivingState determineBlockHolding(Robot& r) {
   /*
    * Takes in a robot, and checks tripwire and current sensor to determine block fit
@@ -185,7 +192,9 @@ void moveTowardsBlock(Robot r) {
   /*
    * Moves towards a block.  
    * This should only trigger if we are somewhat facing the block.
-   * First, check if we are reading the block.  
+   * First, see if we have managed to capture the block.  If so move to the correct 
+   * state
+   * Next, check if we are reading the block.  
    * If we are, move straight.
    * If we aren't, turn side to side slightly until we see it again. 
    * TODO: Add a timer to just give up on this block and determine it to be not there.
@@ -194,6 +203,28 @@ void moveTowardsBlock(Robot r) {
    * if we have goal block and plan on orienting more, end in orientingWithBlock mode
    * If we have enemy block, end in holdingEnemyBlock mode.
    */
+   // If we are holding the block we are gonna be done
+   if (holdingBlock()) {
+    if (((whatAreWeHolding(r) == cube) && (r.team == square)) ||  \
+        ((whatAreWeHolding(r) == cylinder) && (r.team == circle))) {
+          // We have our goal block
+          // TODO(wcookie): If we are in the moveBlockOrient state, then say orientingWithBlock
+          r.driving = holdingGoalBlock;
+          return;
+    } else {
+      // We have the wrong one
+      r.driving = holdingEnemyBlock;
+      return;
+    }
+   }
+   // If we are reading the block, then we want to go straight
+   if (readingBlock(false)) {
+    // We read the block
+    // TODO: Make sure the angle kinda makes sense for where we want to be going
+    moveMotors(STANDARD_SPEED, true, STANDARD_SPEED, true);
+    return;
+   }
+   // If we don't read the block orient ourselves.
 }
 
 void orientRobot(Robot r) {
