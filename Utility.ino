@@ -12,14 +12,6 @@ int blockLaserPin1 = 9;
 double tripwireThreshold = 40; // If we are below this, we are tripped.  Maybe should be calibrated
 
 
-double distance(Point p1, Point p2) {
-  double xDiff = p1.x - p2.x;
-  xDiff *= xDiff;
-  double yDiff = p1.y - p2.y;
-  yDiff *= yDiff;
-  return sqrt(xDiff + yDiff);
-}
-
 void currentSensorSetup() {
   pinMode(currentSensorPin1, INPUT);
   pinMode(currentSensorPin2, INPUT);

@@ -106,7 +106,8 @@ ellipseState robotEllipseState(Robot r) {
    * https://math.stackexchange.com/questions/76457/check-if-a-point-is-within-an-ellipse
    */
    double xTerm = sq(r.pos.x - center.x);
-   if (r.pos.x < 60) {
+   // Using two separate radii to account for different linearity between left and right side of the board
+   if (r.pos.x < center.x) {
     xTerm /= sq(leftXRadius);
    } else {
     xTerm /= sq(rightXRadius);
@@ -121,4 +122,14 @@ ellipseState robotEllipseState(Robot r) {
     return inside;
    }
 }
+
+
+double distance(Point p1, Point p2) {
+  double xDiff = p1.x - p2.x;
+  xDiff *= xDiff;
+  double yDiff = p1.y - p2.y;
+  yDiff *= yDiff;
+  return sqrt(xDiff + yDiff);
+}
+
 
