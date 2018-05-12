@@ -219,12 +219,22 @@ void moveTowardsBlock(Robot r) {
     if (((whatAreWeHolding(r) == cube) && (r.team == square)) ||  \
         ((whatAreWeHolding(r) == cylinder) && (r.team == circle))) {
           // We have our goal block
-          // TODO(wcookie): If we are in the moveBlockOrient state, then say orientingWithBlock
-          r.driving = holdingGoalBlock;
+          // If we are in the moveBlockOrientState, 
+          // then we will say orient with block, 
+          // otherwise say we are holding goal block
+          if (r.approach == moveBlockOrient) {
+            r.driving = orientingWithBlock;
+          } else {
+            r.driving = holdingGoalBlock;
+          }
+          // Turn off motors, right now they are still going.
+          turnMotorsOff();
           return;
     } else {
       // We have the wrong one
       r.driving = holdingEnemyBlock;
+      // Turn off motors
+      turnMotorsOff();
       return;
     }
    }
