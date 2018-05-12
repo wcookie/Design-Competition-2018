@@ -258,6 +258,7 @@ void moveTowardsBlock(Robot r) {
           // Turn off motors and tripwire
           turnOffTripwire();
           turnMotorsOff();
+          r.desiredBlock.state = moved;
           return;
     } else {
       // We have the wrong one
@@ -265,12 +266,14 @@ void moveTowardsBlock(Robot r) {
       // Turn off motors and tripwire
       turnMotorsOff();
       turnOffTripwire();
+      r.desiredBlock.state = invisible;
       return;
     }
    }
    // If we are reading the block, then we want to go straight
    if (readingBlock(false)) {
     // We read the block
+    r.desiredBlock.state = seen;
     // TODO: Make sure the angle kinda makes sense for where we want to be going
     moveMotors(STANDARD_SPEED, true, STANDARD_SPEED, true);
     return;
