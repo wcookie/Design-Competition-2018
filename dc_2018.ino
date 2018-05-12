@@ -148,10 +148,10 @@ struct Robot {
   drivingState driving; // our driving state (whether we are going to block, etc.)
   blockEngageState approach; //how robot is approaching target block or positioning itself
   ellipseState inOrOut; //whether the robot is in or out of the ellipse
-  Point goalPos; // This is mostly relevant for orienting
+  Point goalPos; // This is mostly relevant for orienting, the goal's position we are going for
   Robot(Point p = Point(), double h = 0.0, goalType t = circle, Block b = Block(), 
         searchState s = ellipse, attackState a = scoring, 
-        drivingState ds= orienting, Point gp = Point()):
+        drivingState ds = orienting, Point gp = Point()):
           pos(p), heading(h), team(t), desiredBlock(b), searching(s),
           atk(a), driving(ds), goalPos(gp){}
   

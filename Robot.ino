@@ -285,6 +285,23 @@ void orientRobot(Robot r) {
    * Then drives there.  Then rotates towards the block.
    * Then enters movingTowardsBlock state.
    */
+   // Get our point based on our approach
+   Point desiredPoint;
+   if (r.approach == straightApproach) {
+    desiredPoint = desiredOrientationPointStraight(r, r.desiredBlock, r.goalPos);
+   }
+   // Add statement for if we are doing a moving orient.
+   // Rotate towards our point
+   double angle = desiredAngle(r, desiredPoint);
+   rotateToAngle(r, angle);
+   // Go towards our point
+   driveTowardsPoint(r, desiredPoint); 
+   // Now we are at our point we want to move to
+   // Just rotate to our goal block, then we switch to the moveTowardsBlock state
+   double blockAngle = desiredAngle(r, r.desiredBlock.pos);
+   rotateToAngle(r, blockAngle);
+   // Now we can go into our moveTowardsBlock stage
+   r.driving = movingTowardsBlock;
 }
 
 void orientWithBlock(Robot r) {
@@ -347,5 +364,11 @@ void rotateToAngle(Robot r, double goalAngle) {
    } else {
     moveMotors(TURNING_SPEED, 0, TURNING_SPEED, 1);
    }
+}
+
+void driveTowardsPoint(Robot r, Point p) {
+  /*
+   * Drives our robot to (the vicinity of) our desired point
+   */
 }
 
