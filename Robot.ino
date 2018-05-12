@@ -82,6 +82,7 @@ void setRobotPositionAndDirection(Robot& r) {
    double rawXCenter = (rvd.v1LightPoint.x + rvd.v2LightPoint.x) / 2;
    double rawYCenter = (rvd.v1LightPoint.y + rvd.v2LightPoint.y) / 2;
    r.pos = physicalPointToVirtualPoint(LightPoint(rawXCenter, rawYCenter));
+   r.inOrOut = robotEllipseState(r);
 }
 
 blockType whatAreWeHolding(Robot r) {
@@ -166,12 +167,14 @@ void determineRobotState(Robot& r) {
    r.driving = orienting; 
 }
 
-void dropOffBlock(Robot r) {
+void dropOffBlock(Robot& r) {
   /*
    * For when we are holding our goal block.
    * Goes straight to the goal, checks for when we are by the center of the goal, 
    * then stops, backs up, determines new block, switches mode to orienting
    */
+   printDebugging(r);
+   Serial.println("WE ARE IN DROP OFF BLOCK");
    bool inGoal = false;
    if (r.team == circle) {
     inGoal = inCircleGoal(r);
@@ -201,7 +204,7 @@ void dropOffBlock(Robot r) {
    }
 }
 
-void discardEnemyBlock(Robot r) {
+void discardEnemyBlock(Robot& r) {
   /*
    * Discards Enemy block
    * Basically moves forward for 2 seconds and backwards for 2
@@ -211,6 +214,8 @@ void discardEnemyBlock(Robot r) {
    * Set our state after to orienting
    * TODO(wcookie): Set block state from our array of blocks
    */
+   printDebugging(r);
+   Serial.println("WE ARE IN DISCARD BLOCK");
    double discardSpeed;
    if (r.team == square) {
     discardSpeed = STANDARD_SPEED; // We will go at our normal speed bc cylinders still fat
@@ -230,7 +235,7 @@ void discardEnemyBlock(Robot r) {
    r.driving = orienting;
 }
 
-void moveTowardsBlock(Robot r) {
+void moveTowardsBlock(Robot& r) {
   /*
    * Moves towards a block.  
    * This should only trigger if we are somewhat facing the block.
@@ -245,10 +250,18 @@ void moveTowardsBlock(Robot r) {
    * if we have goal block and plan on orienting more, end in orientingWithBlock mode
    * If we have enemy block, end in holdingEnemyBlock mode.
    */
+   printDebugging(r);
+   Serial.println("WE ARE IN MOVE TOWARDS BLOCK");
+
    // Make sure the trip wire is on :)
     turnOnTripwire();
+    delay(1000);
+    readingBlock(false);
+    Serial.println("Before holding block check");
+    
    // If we are holding the block we are gonna be done
    if (holdingBlock()) {
+    Serial.println("We think we have a block");
     if (((whatAreWeHolding(r) == cube) && (r.team == square)) ||  \
         ((whatAreWeHolding(r) == cylinder) && (r.team == circle))) {
           // We have our goal block
@@ -266,6 +279,7 @@ void moveTowardsBlock(Robot r) {
           r.desiredBlock.state = moved;
           return;
     } else {
+      Serial.println("We don't think we have one");
       // We have the wrong one
       r.driving = holdingEnemyBlock;
       // Turn off motors and tripwire
@@ -286,33 +300,47 @@ void moveTowardsBlock(Robot r) {
    // If we don't read the block orient ourselves.
 }
 
-void orientRobot(Robot r) {
+void orientRobot(Robot& r) {
   /*
    * Does several steps.  First determines where to go to move block.
    * Then rotates towards this point.
    * Then drives there.  Then rotates towards the block.
    * Then enters movingTowardsBlock state.
    */
+   Serial.println("WE ARE IN ORIENT ROBOT");
    // Get our point based on our approach
    Point desiredPoint;
    if (r.approach == straightApproach) {
     desiredPoint = desiredOrientationPointStraight(r, r.desiredBlock, r.goalPos);
    }
+   
    // Add statement for if we are doing a moving orient.
    // Rotate towards our point
+   Serial.println("Angling to point");
+   printDebugging(r);
    double angle = desiredAngle(r, desiredPoint);
    rotateToAngle(r, angle);
+   printDebugging(r);
    // Go towards our point
+   Serial.println("driving to point");
    driveTowardsPoint(r, desiredPoint); 
+   printDebugging(r);
    // Now we are at our point we want to move to
    // Just rotate to our goal block, then we switch to the moveTowardsBlock state
+   Serial.println("Setting angle to face the cylinder");
+   
+   setRobotPositionAndDirection(r);
    double blockAngle = desiredAngle(r, r.desiredBlock.pos);
+   Serial.println(blockAngle);
    rotateToAngle(r, blockAngle);
-   // Now we can go into our moveTowardsBlock stage
+   turnMotorsOff();
+   printDebugging(r);
+   // We should orient and stuff but for now just go to moveTowardsBlock
+   Serial.println("move towards block");
    r.driving = movingTowardsBlock;
 }
 
-void orientWithBlock(Robot r) {
+void orientWithBlock(Robot& r) {
   /*
    * This orients the robot if we already have the block 
    * so that we can face straight towards a goal.
@@ -320,6 +348,7 @@ void orientWithBlock(Robot r) {
    * Ends in holdingGoalBlock mode
    */
    // First find our desired point
+   Serial.println("WE ARE IN ORIENT WITH BLOCK");
    Point desiredPoint = desiredOrientationPointOffset(r, r.desiredBlock, r.goalPos);
    driveTowardsPoint(r, desiredPoint);
    //Now we rotate towards our goal position (with the block)
