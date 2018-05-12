@@ -82,6 +82,11 @@ enum blockEngageState {
   straightApproach, // Robot should find straightline approach TODO(JCohner) call desiredOrientationPointStraight()
 };
 
+enum turningSpeed {
+  fast,
+  slow
+};
+
 // Our Structs
 
 struct Point {
@@ -149,11 +154,12 @@ struct Robot {
   blockEngageState approach; //how robot is approaching target block or positioning itself
   ellipseState inOrOut; //whether the robot is in or out of the ellipse
   Point goalPos; // This is mostly relevant for orienting, the goal's position we are going for
+  turningSpeed turnSpeed; // Whether we are turning fast or slow
   Robot(Point p = Point(), double h = 0.0, goalType t = circle, Block b = Block(), 
         searchState s = ellipse, attackState a = scoring, 
-        drivingState ds = orienting, Point gp = Point()):
+        drivingState ds = orienting, Point gp = Point(), turningSpeed ts = fast):
           pos(p), heading(h), team(t), desiredBlock(b), searching(s),
-          atk(a), driving(ds), goalPos(gp){}
+          atk(a), driving(ds), goalPos(gp), turnSpeed(ts){}
   
 };
 
@@ -212,15 +218,16 @@ void loop() {
   //readingBlock(true);
 
   // SWITCH ON STATE
-  switch(phoenix.driving) {
+  /*switch(phoenix.driving) {
     case holdingGoalBlock: dropOffBlock(phoenix);
     case holdingEnemyBlock: discardEnemyBlock(phoenix);
     case movingTowardsBlock: moveTowardsBlock(phoenix);
     case orienting: orientRobot(phoenix);
     case orientingWithBlock: orientWithBlock(phoenix);
-  }
-  moveMotors(100, 1, 100, 1);
-  delay(250);
+  }*/
+  rotateToAngle(phoenix, 0);
+  //moveMotors(100, 1, 100, 1);
+  delay(5000);
   
 }
 

@@ -7,12 +7,14 @@
 #define CYLINDER_THRESHOLD 400 // If we are below this mark, we believe we are carrying a cylinder
 
 // Angle difference
-#define ANGLE_DIFFERENCE .1
+#define FAST_ANGLE_DIFFERENCE .15
+#define SLOW_ANGLE_DIFFERENCE .02
 
 // Speeds
 #define STANDARD_SPEED 100
 #define SMALLER_SPEED 60
-#define TURNING_SPEED 70
+#define FAST_TURNING_SPEED 60
+#define SLOW_TURNING_SPEED 35
 #define CUBE_SPEED 110
 #define CYLINDER_SPEED 150
 
@@ -363,26 +365,71 @@ void moveMotors(int leftSpeed, bool leftDirection, int rightSpeed, bool rightDir
  digitalWrite(rightDIR, rightDirection);
 }
 
-void rotateToAngle(Robot r, double goalAngle) {
+void rotateToAngle(Robot& r, double goalAngle) {
   /*
+   * This just does a while loop until rotateToAngleDecision returns true
+   * THIS IS A BLOCKING FUNCTION
+   */
+   // loops until rotateToAngleDecision is true
+   while(!rotateToAngleDecision(r, goalAngle)) {
+    ;
+   }
+}
+
+bool rotateToAngleDecision(Robot& r, double goalAngle) {
+  /*
+   * This is the secondary rotate to angle function.
+   * First goes at a faster speed.  Then will do it again
+   * At a slower speed to get speed AND precision
+   * @sourpatchkid9's idea once again
+   * 
+   * At least FOR NOW, this is a BLOCKING FUNCTION
+   */
+   setRobotPositionAndDirection(r);
+   if (r.turnSpeed == fast){
+    rotateToAngleHelper(r, goalAngle, FAST_TURNING_SPEED);
+    return false;
+   }else {
+    return rotateToAngleHelper(r, goalAngle, SLOW_TURNING_SPEED);
+   }
+}
+
+bool rotateToAngleHelper(Robot& r, double goalAngle, double turningSpeed) {
+  /*
+   * Helper to help
    * Rotates our robot to a desired angle
    * basically until we're like .1 off
-   * stops when we are
+   * stops when we are.  This will turn at a desired speed.
+   * 
+   * Returns true once we are there
    */
-   if (abs(r.heading - goalAngle) < ANGLE_DIFFERENCE) {
+   double angleDiff;
+   if (r.turnSpeed == fast) {
+    angleDiff = FAST_ANGLE_DIFFERENCE;
+   } else {
+    angleDiff = SLOW_ANGLE_DIFFERENCE;
+   }
+   if (abs(r.heading - goalAngle) < angleDiff) {
     turnMotorsOff();
-    return;
+    if (r.turnSpeed == fast) {
+      r.turnSpeed = slow;
+    } else {
+      r.turnSpeed = fast;
+    }
+    return true;
    }
    if (r.heading > goalAngle) {
-    moveMotors(TURNING_SPEED, 1, TURNING_SPEED, 0);
+    moveMotors(turningSpeed, 1, turningSpeed, 0);
    } else {
-    moveMotors(TURNING_SPEED, 0, TURNING_SPEED, 1);
+    moveMotors(turningSpeed, 0, turningSpeed, 1);
    }
+   return false;
 }
 
 void driveTowardsPoint(Robot r, Point p) {
   /*
    * Drives our robot to (the vicinity of) our desired point
+   * For now just goes straight.  Should be checking our angle constantly really
    */
    // Start with rotating to the angle (should already be rotated really)
 }
