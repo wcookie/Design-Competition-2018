@@ -146,7 +146,8 @@ struct Robot {
   searchState searching; // whether we are still on the ellipse or not
   attackState atk; // whether we are attacking or defending
   drivingState driving; // our driving state (whether we are going to block, etc.)
-  blockEngageState approach;
+  blockEngageState approach; //how robot is approaching target block or positioning itself
+  ellipseState inOrOut; //whether the robot is in or out of the ellipse
   Point goalPos; // This is mostly relevant for orienting
   Robot(Point p = Point(), double h = 0.0, goalType t = circle, Block b = Block(), 
         searchState s = ellipse, attackState a = scoring, 
@@ -169,6 +170,18 @@ typedef struct {
 
 // Our Global Variables
 Robot phoenix; // Phoenix is our robot object used throughout
+Circle Circles[] = {Circle(Point(6.1, 49.0), 5.0), // Outer
+                    Circle(Point(30.5, 30.75), 5.0), // Inner
+                    Circle(Point(100.0, 11), 5.0) // Outer
+};
+Circle innerCircle = Circles[1];
+Circle outerCircles[] = {Circles[0], Circles[2]};
+Square Squares[] = {Square(Point(1.0, 2.0), 5.0), // Outer
+                    Square(Point(5.0, -4.0), 5.0), // Inner
+                    Square(Point(2.0, 0.0), 5.0) // Outer
+};
+Square innerSquare = Squares[1];
+Square outerSquares[] = {Squares[0], Squares[2]};
 
 // Vive Global Variables
 volatile viveSensor V1, V2;
