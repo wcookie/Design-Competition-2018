@@ -170,6 +170,18 @@ typedef struct {
 
 // Our Global Variables
 Robot phoenix; // Phoenix is our robot object used throughout
+Circle Circles[] = {Circle(Point(6.1, 49.0), 5.0), // Outer
+                    Circle(Point(30.5, 30.75), 5.0), // Inner
+                    Circle(Point(100.0, 11), 5.0) // Outer
+};
+Circle innerCircle = Circles[1];
+Circle outerCircles[] = {Circles[0], Circles[2]};
+Square Squares[] = {Square(Point(1.0, 2.0), 5.0), // Outer
+                    Square(Point(5.0, -4.0), 5.0), // Inner
+                    Square(Point(2.0, 0.0), 5.0) // Outer
+};
+Square innerSquare = Squares[1];
+Square outerSquares[] = {Squares[0], Squares[2]};
 
 // Vive Global Variables
 volatile viveSensor V1, V2;

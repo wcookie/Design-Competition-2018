@@ -78,29 +78,74 @@ double blockDeterminingHeuristic(Block b, Robot& r) {
    return tempHeuristic;
 }
 
-blockEngageState blockDetermineEngageState (Block b, Robot& r, Point goal) {
+blockEngageState blockDetermineEngageState (Block b, const Robot& r) {
    /*
     * This determines the best enagagement approach for the relative position of block, robot, & goal
     * Returns a blockEngageState [outMoveIn, inMoveOut, moveBlockOrient, straightLine]
     * TODO: (JCohner) add heuristic altering values in blockDetermineHeuristic
     */
-    /*
+  
     if (r.team == circle) {
       // find which of outter circle is closer
-      double distOutter1 = distance(r.pos, outerCircle[0].center);
-      double distOutter2 = distance(r.pos, outerCircle[2].center);
+      double distOutter1 = distance(r.pos, outerCircles[0].center);
+      double distOutter2 = distance(r.pos, outerCircles[1].center);
 
+      Circle bestOutter;
       if (distOutter1 < distOutter2) {
-        Circle bestOutter = distOutter1;
+        bestOutter = outerCircles[0];
       } else {
-        Circle bestOutter = distOutter2;
+        bestOutter = outerCircles[1];
+      }
+      
+      ellipseState inOrOut = r.inOrOut;
+      Circle goal;
+      if (inOrOut == inside){
+        goal = bestOutter;
+      } else {
+        goal = innerCircle;
+      }
+      
+      //determine if closest enemy block interferes 
+      Block interferenceBlock1;
+      Block interferenceBlock2;
+      Block interferenceBlock;
+      double minDistance = 10000;
+      for (int ii = 0; ii < 12; ++ii){
+         if (distance(b.pos, cubes[ii].pos) < minDistance) {
+          interferenceBlock1 = cubes[ii];
+          minDistance = distance(b.pos, cubes[ii].pos);
+         } else if (distance(b.pos, cubes[ii].pos) == minDistance){
+          interferenceBlock2 = cubes[ii];
+         }
       }
 
+      Circle adjustedGoal1 = goal;
+      Circle adjustedGoal2 = goal;
+      if (distance(interferenceBlock1.pos, goal.center) < distance(interferenceBlock2.pos, goal.center)){
+        interferenceBlock = interferenceBlock1;
+      } else {
+        interferenceBlock = interferenceBlock2;
+      }
+
+      //adjust conflict zone based on relative positions
+      if (((goal.center.x - r.pos.x) * (goal.center.y - r.pos.y)) > 0) { //same sign therefore in quad 1 or 3
+        adjustedGoal1.center.x += 3;
+        adjustedGoal1.center.y += 3;
+        adjustedGoal2.center.x -= 3;
+        adjustedGoal2.center.y -= 3;
+      } else { //in quad 2 or 4
+        adjustedGoal1.center.x += 3;
+        adjustedGoal1.center.y -= 3;
+        adjustedGoal2.center.x -= 3;
+        adjustedGoal2.center.y += 3;
+      }
+
+      //now see if adjusted goal lines conflict with piece 
       
     } else {
       
     }
-    */
+   
 
 }
 

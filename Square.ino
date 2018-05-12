@@ -1,12 +1,4 @@
-//Square comes before in arguments
 
-Square Squares[] = {Square(Point(1.0, 2.0), 5.0), // Outer
-                    Square(Point(5.0, -4.0), 5.0), // Inner
-                    Square(Point(2.0, 0.0), 5.0) // Outer
-};
-
-Square innerSquare = Squares[1];
-Square outerSquares[] = {Squares[0], Squares[2]};
 
 Square findNearestSquare(Point p) {
   /*
