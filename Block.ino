@@ -3,6 +3,7 @@
 #define ROTATION_COEFFICIENT 5
 #define TEAM_CIRCLE_PATH_COLLISION 3
 #define CIRCLE_TEAM_OFFSET 2
+#define SQUARE_TEAM_OFFSET 3
 
 
 /*
@@ -163,20 +164,99 @@ blockEngageState blockDetermineEngageState (Block b, const Robot& r) {
       double angleInterference2ToAdjGoal2 = angleBetween2Points(blockInterferencePoint2, adjustedGoal2.center);
       double angleInterference1ToAdjGoal2 = angleBetween2Points(blockInterferencePoint1, adjustedGoal2.center);
 
-      if (angleInterference4ToAdjGoal1 < angleBlockToAdjGoal1 || angleInterference3ToAdjGoal1 < angleBlockToAdjGoal1 || angleInterference2ToAdjGoal1 < angleBlockToAdjGoal1 || angleInterference1ToAdjGoal1 < angleBlockToAdjGoal1){
+      if ((angleInterference4ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference3ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference2ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference1ToAdjGoal1 < angleBlockToAdjGoal1)){
         //Interference
         return moveBlockOrient; 
-      } else if (angleInterference4ToAdjGoal2 > angleBlockToAdjGoal2 || angleInterference3ToAdjGoal2 > angleBlockToAdjGoal2 || angleInterference2ToAdjGoal2 < angleBlockToAdjGoal2 || angleInterference1ToAdjGoal2 < angleBlockToAdjGoal2){
+      } else if ((angleInterference4ToAdjGoal2 > angleBlockToAdjGoal2) || (angleInterference3ToAdjGoal2 > angleBlockToAdjGoal2) || (angleInterference2ToAdjGoal2 < angleBlockToAdjGoal2) || (angleInterference1ToAdjGoal2 < angleBlockToAdjGoal2)){
+        //Interference
+        return moveBlockOrient;       
+      } else {
+        return straightApproach;
+      }   
+    } else { //Square team 
+      // find which of outter circle is closer
+      double distOutter1 = distance(r.pos, outerSquares[0].center);
+      double distOutter2 = distance(r.pos, outerSquares[1].center);
+
+      Square bestOutter;
+      if (distOutter1 < distOutter2) {
+        bestOutter = outerSquares[0];
+      } else {
+        bestOutter = outerSquares[1];
+      }
+      
+      ellipseState inOrOut = r.inOrOut;
+      Square goal;
+      if (inOrOut == inside){
+        goal = bestOutter;
+      } else {
+        goal = innerSquare;
+      }
+      
+      //determine if closest enemy block interferes 
+      Block interferenceBlock1;
+      Block interferenceBlock2;
+      Block interferenceBlock;
+      double minDistance = 10000;
+      double minDistance2 = 1000;
+      for (int ii = 0; ii < 12; ++ii){
+         if (distance(b.pos, cylinders[ii].pos) < minDistance) {
+          interferenceBlock2 = interferenceBlock1;
+          minDistance2 = minDistance;
+          interferenceBlock1 = cylinders[ii];
+          minDistance = distance(b.pos, cylinders[ii].pos);
+         } else if (distance(b.pos, cylinders[ii].pos) < minDistance2){
+          interferenceBlock2 = cylinders[ii];
+          minDistance2 = distance(b.pos, cylinders[ii].pos);
+         }
+      } 
+      if (distance(interferenceBlock1.pos, goal.center) < distance(interferenceBlock2.pos, goal.center)){
+        interferenceBlock = interferenceBlock1;
+      } else {
+        interferenceBlock = interferenceBlock2;
+      }
+      
+      Point blockInterferencePoint1 = Point(interferenceBlock.pos.x + SQUARE_TEAM_OFFSET, interferenceBlock.pos.y);
+      Point blockInterferencePoint2 = Point(interferenceBlock.pos.x, interferenceBlock.pos.y + SQUARE_TEAM_OFFSET); 
+      Point blockInterferencePoint3 = Point(interferenceBlock.pos.x - SQUARE_TEAM_OFFSET, interferenceBlock.pos.y);
+      Point blockInterferencePoint4 = Point(interferenceBlock.pos.x, interferenceBlock.pos.y - SQUARE_TEAM_OFFSET); 
+
+
+      double approachAngle = angleBetween2Points(b.pos, goal.center);
+      double approachDistance = distance(b.pos, goal.center);
+
+      double offsetAngle = approachAngle + M_PI/2;
+      Square adjustedGoal1 = goal;
+      Square adjustedGoal2 = goal;
+
+      adjustedGoal1.center.x = goal.center.x + (cos(offsetAngle) * SQUARE_TEAM_OFFSET);
+      adjustedGoal1.center.y = goal.center.y + (sin(offsetAngle) * SQUARE_TEAM_OFFSET);
+      adjustedGoal2.center.x = goal.center.x - (cos(offsetAngle) * SQUARE_TEAM_OFFSET);
+      adjustedGoal2.center.y = goal.center.y - (sin(offsetAngle) * SQUARE_TEAM_OFFSET);
+
+
+      double angleBlockToAdjGoal1 = angleBetween2Points(b.pos, adjustedGoal1.center);
+      double angleBlockToAdjGoal2 = angleBetween2Points(b.pos, adjustedGoal2.center);
+      
+      double angleInterference4ToAdjGoal1 = angleBetween2Points(blockInterferencePoint4, adjustedGoal1.center);
+      double angleInterference3ToAdjGoal1 = angleBetween2Points(blockInterferencePoint3, adjustedGoal1.center);
+      double angleInterference2ToAdjGoal1 = angleBetween2Points(blockInterferencePoint2, adjustedGoal1.center);
+      double angleInterference1ToAdjGoal1 = angleBetween2Points(blockInterferencePoint1, adjustedGoal1.center);
+      
+      double angleInterference4ToAdjGoal2 = angleBetween2Points(blockInterferencePoint4, adjustedGoal2.center);
+      double angleInterference3ToAdjGoal2 = angleBetween2Points(blockInterferencePoint3, adjustedGoal2.center);
+      double angleInterference2ToAdjGoal2 = angleBetween2Points(blockInterferencePoint2, adjustedGoal2.center);
+      double angleInterference1ToAdjGoal2 = angleBetween2Points(blockInterferencePoint1, adjustedGoal2.center);
+
+      if ((angleInterference4ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference3ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference2ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference1ToAdjGoal1 < angleBlockToAdjGoal1)){
+        //Interference
+        return moveBlockOrient; 
+      } else if ((angleInterference4ToAdjGoal2 > angleBlockToAdjGoal2) || (angleInterference3ToAdjGoal2 > angleBlockToAdjGoal2) || (angleInterference2ToAdjGoal2 < angleBlockToAdjGoal2) || (angleInterference1ToAdjGoal2 < angleBlockToAdjGoal2)){
         //Interference
         return moveBlockOrient;       
       } else {
         return straightApproach;
       }
-      
-
-      
-    } else {
-      
     }
    
 
