@@ -177,10 +177,10 @@ void dropOffBlock(Robot r) {
     // What we're doing if we are in the goal
     // Back up for 2 seconds
     backUpRoutine(2000);
-    // Determine our next block
-    r.desiredBlock = determineBestBlock(r);
     // Turn motors off
     turnMotorsOff();
+    // Determine our next block
+    r.desiredBlock = determineBestBlock(r);
     // Set mode to orienting
     r.driving = orienting;
     // Finish
@@ -199,7 +199,30 @@ void dropOffBlock(Robot r) {
 void discardEnemyBlock(Robot r) {
   /*
    * Discards Enemy block
+   * Basically moves forward for 2 seconds and backwards for 2
+   * We will move slowly so for a cylinder we will go at standard speed 
+   * and for a cube go at smaller speed
+   * Determine new block;
+   * Set our state after to orienting
+   * TODO(wcookie): Set block state from our array of blocks
    */
+   double discardSpeed;
+   if (r.team == square) {
+    discardSpeed = STANDARD_SPEED; // We will go at our normal speed bc cylinders still fat
+   } else {
+    discardSpeed = SMALLER_SPEED; // Going slower for a cube
+   }
+   // Do this for 2 seconds forwards then backwards
+   moveMotors(discardSpeed, 1, discardSpeed, 1);
+   delay(2000);
+   // Go Backwards
+   backUpRoutine(2000);
+   // Turn off motors
+   turnMotorsOff();
+   // Get our goal block
+   r.desiredBlock = determineBestBlock(r);
+   // Now set into orienting mode
+   r.driving = orienting;
 }
 
 void moveTowardsBlock(Robot r) {
@@ -276,7 +299,7 @@ void backUpRoutine(int t) {
   /*
    * Our routine that goes backwards slowly for some time t
    */
-  moveMotors(SMALLER_SPEED, -1, SMALLER_SPEED, -1);
+  moveMotors(SMALLER_SPEED, 0, SMALLER_SPEED, 0);
   delay(t);
 }
 
