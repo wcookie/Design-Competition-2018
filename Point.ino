@@ -148,6 +148,13 @@ double desiredAngle(Robot r, Point p) {
    return atan2(yDiff, xDiff);
 }
 
+double angleBetween2Points(Point p1, Point p2){
+  double angle;
+  double yDiff = p2.y - p1.y;
+  double xDiff = p2.x - p1.x;
+  return atan2(yDiff,xDiff);
+}
+
 Point desiredOrientationPointStraight(Robot r, Block b, Point goal) {
   /*
    * For our orienting mode, this tells us where to drive to before we rotate to go straight to the block to the goal
