@@ -204,7 +204,7 @@ void printDebugging(Robot r) {
   printBestBlock(r);
 }
 
-void printBlockEnageState(Block b, Robot r){
+void printBlockEngageState(Block b, Robot r){
   Serial.print("Target Block: ");
   Serial.print(b.type);
   Serial.print(" at ");

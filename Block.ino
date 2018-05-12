@@ -47,6 +47,12 @@ Block cubes[] = {Block(Point(17.3, 16.5), cube, unknown),
                  Block(Point(142.0, 3.0), cube, unknown)};
 
 
+void printThreeCylinders(Robot r) {
+    for (int i = 0; i < 3; ++i) {
+    printBlockEngageState(cylinders[i], r);
+  }
+}
+
 Block determineBestBlock(Robot& r) {
   Block bestBlock;
   double minHeuristic = 100000;

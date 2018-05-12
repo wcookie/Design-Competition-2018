@@ -216,6 +216,7 @@ void loop() {
   setRobotPositionAndDirection(phoenix);
   printDebugging(phoenix);
   //readingBlock(true);
+  printThreeCylinders(phoenix);
 
   // SWITCH ON STATE
   /*switch(phoenix.driving) {
