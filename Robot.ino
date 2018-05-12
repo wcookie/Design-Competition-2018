@@ -79,8 +79,19 @@ void setRobotPositionAndDirection(Robot& r) {
 blockType whatAreWeHolding(Robot r) {
   /*
    * Determines whether we are holding a cylinder or a cube.
+   * Should only be called if we are holding something
+   * First drives for 400 milliseconds to normalize for current speed stuff.
+   * Then says if we are reading a value smaller then CYLINDER_THRESHOLD, 
+   * return cylinder
+   * otherwise return cube
    */
-   
+   moveMotors(STANDARD_SPEED, true, STANDARD_SPEED, true);
+   delay(400);
+   if (readCurrentSensor() < CYLINDER_THRESHOLD) {
+    return cylinder;
+   } else {
+    return cube;
+   }
 }
 
 drivingState determineBlockHolding(Robot& r) {
