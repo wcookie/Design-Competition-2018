@@ -9,7 +9,7 @@ int blockPTPin = 18; // A2
 int blockLaserPin2 = 21;
 int blockLaserPin1 = 20;
 
-double tripwireThreshold = 40; // If we are below this, we are tripped.  Maybe should be calibrated
+double tripwireThreshold = 25; // If we are below this, we are tripped.  Maybe should be calibrated
 
 
 void currentSensorSetup() {
@@ -23,8 +23,6 @@ void lasersSetup() {
   pinMode(blockLaserPin1, OUTPUT);
   pinMode(blockLaserPin2, OUTPUT);
   pinMode(tripwireLaser, OUTPUT);
-  // TAKE THIS OUT:
-  digitalWrite(tripwireLaser, LOW);
 }
 
 double readCurrentSensor() {
@@ -69,6 +67,14 @@ double readTripwire() {
    * reads the trip wire
    */
    return analogRead(tripwirePin);
+}
+
+void turnOnTripwire() {
+  digitalWrite(tripwirePin, HIGH);
+}
+
+void turnOffTripwire() {
+  digitalWrite(tripwirePin, LOW);
 }
 
 bool holdingBlock() {

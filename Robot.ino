@@ -217,6 +217,8 @@ void moveTowardsBlock(Robot r) {
    * if we have goal block and plan on orienting more, end in orientingWithBlock mode
    * If we have enemy block, end in holdingEnemyBlock mode.
    */
+   // Make sure the trip wire is on :)
+    turnOnTripwire();
    // If we are holding the block we are gonna be done
    if (holdingBlock()) {
     if (((whatAreWeHolding(r) == cube) && (r.team == square)) ||  \
@@ -230,14 +232,16 @@ void moveTowardsBlock(Robot r) {
           } else {
             r.driving = holdingGoalBlock;
           }
-          // Turn off motors, right now they are still going.
+          // Turn off motors and tripwire
+          turnOffTripwire();
           turnMotorsOff();
           return;
     } else {
       // We have the wrong one
       r.driving = holdingEnemyBlock;
-      // Turn off motors
+      // Turn off motors and tripwire
       turnMotorsOff();
+      turnOffTripwire();
       return;
     }
    }
