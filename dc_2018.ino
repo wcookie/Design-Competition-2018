@@ -75,6 +75,12 @@ enum drivingState {
   other
 };
 
+enum blockEngageState {
+  outMoveIn, // Robot is outside, move inside and reapproach
+  inMoveOut, // Robot is inside, move outside and reapproach
+  moveBlockOrient, // obstacles in way of straightline, move block, reorient, reapproach
+  straightApproach, // Robot should find straightline approach TODO(JCohner) call desiredOrientationPointStraight()
+};
 // Our Structs
 
 struct Point {
@@ -139,6 +145,7 @@ struct Robot {
   searchState searching; // whether we are still on the ellipse or not
   attackState atk; // whether we are attacking or defending
   drivingState driving; // our driving state (whether we are going to block, etc.)
+  blockEngageState approach;
   Point goalPos; // This is mostly relevant for orienting
   Robot(Point p = Point(), double h = 0.0, goalType t = circle, Block b = Block(), 
         searchState s = ellipse, attackState a = scoring, 

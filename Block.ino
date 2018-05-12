@@ -77,5 +77,13 @@ double blockDeterminingHeuristic(Block b, Robot& r) {
    tempHeuristic += (distance(b.pos, r.pos) * BOT_TO_BLOCK_COEFFICIENT);
    return tempHeuristic;
 }
-                 
+
+blockEngageState blockDetermineEngageState (Block b, Robot& r, Point goal) {
+   /*
+    * This determines the best enagagement approach for the relative position of block, robot, & goal
+    * Returns a blockEngageState [outMoveIn, inMoveOut, straightLine
+    */
+
+}
+
                      
