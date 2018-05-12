@@ -4,13 +4,27 @@
 int currentSensorPin1 = 14; // A0
 int currentSensorPin2 = 15; // A1
 int tripwirePin = 19; // A8
-int tripwireLaser = 17;
+int tripwireLaser = 16;
 int blockPTPin = 18; // A2
 int blockLaserPin2 = 21;
 int blockLaserPin1 = 20;
 
-double tripwireThreshold = 25; // If we are below this, we are tripped.  Maybe should be calibrated
+double tripwireThreshold = 40; // If we are below this, we are tripped.  Maybe should be calibrated
+double initialTripwireValue = 0.0;
 
+
+void setupTripwire() {
+  /*
+   * Reads values for 20 millis off
+   */
+   turnOnTripwire();
+   double sum = 0.0;
+   for (int i = 0; i < 20; ++i) {
+    sum += readTripwire();
+    delay(1);
+   }
+   initialTripwireValue = sum / 20.0;
+}
 
 void currentSensorSetup() {
   pinMode(currentSensorPin1, INPUT);
@@ -66,15 +80,20 @@ double readTripwire() {
   /*
    * reads the trip wire
    */
-   return analogRead(tripwirePin);
+   double sum = 0.0;
+   for (int i = 0; i < 10; ++i) {
+    sum += analogRead(tripwirePin);
+    delay(1);
+   }
+   return sum / 10.0;
 }
 
 void turnOnTripwire() {
-  digitalWrite(tripwirePin, HIGH);
+  digitalWrite(tripwireLaser, HIGH);
 }
 
 void turnOffTripwire() {
-  digitalWrite(tripwirePin, LOW);
+  digitalWrite(tripwireLaser, LOW);
 }
 
 bool holdingBlock() {
@@ -84,7 +103,7 @@ bool holdingBlock() {
    * Less than because normally we will have laser hitting the phototransistor, and a block stops
    * the connection
    */
-   return (readTripwire() < tripwireThreshold);
+   return ((initialTripwireValue - readTripwire()) > tripwireThreshold);
 }
 
 double readBlockLaser() {

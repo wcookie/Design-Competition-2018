@@ -178,6 +178,19 @@ Point desiredOrientationPointStraight(Robot r, Block b, Point goal) {
    * further along the line just to avoid turning and fucking with the block
    * Also make sure it's not too close to the edge
    */
+   // V2:
+   // FOr now super hackey.  Basically get our angle to the block, and the distance. 
+   // Multilply distance * 2, with slope
+   double xDiff = b.pos.x - goal.x;
+   double yDiff = b.pos.y - goal.y;
+   Point goalPos;
+   goalPos.x = b.pos.x + xDiff;
+   goalPos.y = b.pos.y + yDiff;
+   return goalPos;
+
+
+
+   // V1:
    double distRobotCenter = distance(r.pos, goal); 
    double distRobotBlock = distance(r.pos, b.pos); 
    double distBlockCenter = distance(b.pos, goal);

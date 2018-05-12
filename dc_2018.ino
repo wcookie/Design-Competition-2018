@@ -197,6 +197,7 @@ double xOld2 = 0, yOld2 = 0, xFilt2 = 0, yFilt2 = 0;
 
 
 
+
 void setup() {
   Serial.begin(9600);
   motorSetup();
@@ -204,6 +205,7 @@ void setup() {
   lasersSetup();
   viveSetup();
   lastSeenSetup();
+  setupTripwire();
   // set up our phoenix robot based on what we have.
   // Normally circle is getTeam()
   phoenix = Robot(Point(), 0.0, circle, Block(), ellipse, getAttackState(), orienting, Point());
@@ -215,8 +217,15 @@ void loop() {
   // First update our robot's position and direction
   setRobotPositionAndDirection(phoenix);
   printDebugging(phoenix);
+  Serial.print("Desired angle: ");
+  Serial.println(desiredAngle(phoenix, phoenix.desiredBlock.pos));
   //readingBlock(true);
+  phoenix.goalPos = Circles[0].center;
   //printThreeCylinders(phoenix);
+  turnOnTripwire();
+  Serial.println(readTripwire());
+  Serial.println(holdingBlock());
+
 
   // SWITCH ON STATE
   /*switch(phoenix.driving) {
@@ -225,10 +234,11 @@ void loop() {
     case movingTowardsBlock: moveTowardsBlock(phoenix);
     case orienting: orientRobot(phoenix);
     case orientingWithBlock: orientWithBlock(phoenix);
-  }*/
+  } 
+*/
   //rotateToAngle(phoenix, 0);
-  //moveMotors(100, 1, 100, 1);
-  driveTowardsPoint(phoenix, innerCircle.center);
+  moveMotors(100, 1, 100, 1);
+  //driveTowardsPoint(phoenix, innerCircle.center);
   delay(500);
   
 }
