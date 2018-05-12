@@ -6,6 +6,9 @@
  */
 #define CYLINDER_THRESHOLD 400 // If we are below this mark, we believe we are carrying a cylinder
 
+// Angle difference
+#define ANGLE_DIFFERENCE .1
+
 // Speeds
 #define STANDARD_SPEED 100
 #define SMALLER_SPEED 60
@@ -301,3 +304,21 @@ void moveMotors(int leftSpeed, bool leftDirection, int rightSpeed, bool rightDir
  analogWrite(rightPWM, rightSpeed);
  digitalWrite(rightDIR, rightDirection);
 }
+
+void rotateToAngle(Robot r, double goalAngle) {
+  /*
+   * Rotates our robot to a desired angle
+   * basically until we're like .1 off
+   * stops when we are
+   */
+   if (abs(r.heading - goalAngle) < ANGLE_DIFFERENCE) {
+    turnMotorsOff();
+    return;
+   }
+   if (r.heading > goalAngle) {
+    moveMotors(TURNING_SPEED, 1, TURNING_SPEED, 0);
+   } else {
+    moveMotors(TURNING_SPEED, 0, TURNING_SPEED, 1);
+   }
+}
+

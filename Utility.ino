@@ -3,7 +3,8 @@
 
 int currentSensorPin1 = 14; // A0
 int currentSensorPin2 = 15; // A1
-int tripwirePin = 22; // A8
+int tripwirePin = 19; // A8
+int tripwireLaser = 17;
 int blockPTPin = 18; // A2
 int blockLaserPin2 = 21;
 int blockLaserPin1 = 20;
@@ -21,6 +22,9 @@ void lasersSetup() {
   pinMode(blockPTPin, INPUT);
   pinMode(blockLaserPin1, OUTPUT);
   pinMode(blockLaserPin2, OUTPUT);
+  pinMode(tripwireLaser, OUTPUT);
+  // TAKE THIS OUT:
+  digitalWrite(tripwireLaser, LOW);
 }
 
 double readCurrentSensor() {
@@ -167,6 +171,11 @@ void printBestBlock(Robot r) {
    Serial.print(b.pos.x);
    Serial.print(", ");
    Serial.println(b.pos.y);
+}
+
+void printTripwire() {
+  Serial.print("Trip wire: ");
+  Serial.println(readTripwire());
 }
 
 void printDebugging(Robot r) {
