@@ -1,5 +1,5 @@
 // Tab for miscalleneous functions / utility
-#define BLOCK_LASER_THRESHOLD 75 // If the difference is above this we see a block
+#define BLOCK_LASER_THRESHOLD 40 // If the difference is above this we see a block
 
 int currentSensorPin1 = 14; // A0
 int currentSensorPin2 = 15; // A1
