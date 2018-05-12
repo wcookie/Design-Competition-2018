@@ -2,7 +2,7 @@
 #define BOT_TO_BLOCK_COEFFICIENT .25
 #define ROTATION_COEFFICIENT 5
 #define TEAM_CIRCLE_PATH_COLLISION 3
-#define TEAM_CIRCLE_OBSTACLE_COLLISION 2
+#define CIRCLE_TEAM_OFFSET 2
 
 
 /*
@@ -131,49 +131,47 @@ blockEngageState blockDetermineEngageState (Block b, const Robot& r) {
         interferenceBlock = interferenceBlock2;
       }
       
-      Point blockInterferencePoint1 = Point(interferenceBlock.pos.x + TEAM_CIRCLE_OBSTACLE_COLLISION, interferenceBlock.pos.y);
-      Point blockInterferencePoint2 = Point(interferenceBlock.pos.x, interferenceBlock.pos.y + TEAM_CIRCLE_OBSTACLE_COLLISION); 
-      Point blockInterferencePoint3 = Point(interferenceBlock.pos.x - TEAM_CIRCLE_OBSTACLE_COLLISION, interferenceBlock.pos.y);
-      Point blockInterferencePoint4 = Point(interferenceBlock.pos.x, interferenceBlock.pos.y - TEAM_CIRCLE_OBSTACLE_COLLISION); 
-      
-      //adjust conflict zone based on relative positions
-      //Circle adjustedGoal1 = goal;
-      //Circle adjustedGoal2 = goal;
-      if (((goal.center.x - r.pos.x) * (goal.center.y - r.pos.y)) > 0) { //same sign therefore in quad 1 or 3
-        if (blockInterferencePoint3.y < blockInterferencePoint3.x + TEAM_CIRCLE_PATH_COLLISION){ //you have a collision
-           
-        } else if (blockInterferencePoint1.y > blockInterferencePoint1.x - sqrt(sq(TEAM_CIRCLE_PATH_COLLISION) + sq(r.pos.x))) { //you have a collision
-          
-        } else if (blockInterferencePoint4.y < blockInterferencePoint4.x - TEAM_CIRCLE_PATH_COLLISION) { //you have a collision
-          
-        } else if (blockInterferencePoint2.y < blockInterferencePoint2.x + TEAM_CIRCLE_PATH_COLLISION) { //you have a collision
-          
-        }
-        /*
-        adjustedGoal1.center.x += TEAM_CIRCLE_PATH_COLLISION;
-        adjustedGoal1.center.y += TEAM_CIRCLE_PATH_COLLISION;
-        adjustedGoal2.center.x -= TEAM_CIRCLE_PATH_COLLISION;
-        adjustedGoal2.center.y -= TEAM_CIRCLE_PATH_COLLISION;
-        */
-      } else { //in quad 2 or 4
-        if (blockInterferencePoint3.y < -(blockInterferencePoint3.x) + TEAM_CIRCLE_PATH_COLLISION){ //you have a collision
-           
-        } else if (blockInterferencePoint1.y > -(blockInterferencePoint1.x) - TEAM_CIRCLE_PATH_COLLISION) { //you have a collision
-          
-        } else if (blockInterferencePoint4.y < -(blockInterferencePoint4.x) - TEAM_CIRCLE_PATH_COLLISION) { //you have a collision
-          
-        } else if (blockInterferencePoint2.y < -(blockInterferencePoint2.x) + TEAM_CIRCLE_PATH_COLLISION) { //you have a collision
-          
-        }
-        /*
-        adjustedGoal1.center.x += TEAM_CIRCLE_PATH_COLLISION;
-        adjustedGoal1.center.y -= TEAM_CIRCLE_PATH_COLLISION;
-        adjustedGoal2.center.x -= TEAM_CIRCLE_PATH_COLLISION;
-        adjustedGoal2.center.y += TEAM_CIRCLE_PATH_COLLISION;
-        */
-      }
+      Point blockInterferencePoint1 = Point(interferenceBlock.pos.x + CIRCLE_TEAM_OFFSET, interferenceBlock.pos.y);
+      Point blockInterferencePoint2 = Point(interferenceBlock.pos.x, interferenceBlock.pos.y + CIRCLE_TEAM_OFFSET); 
+      Point blockInterferencePoint3 = Point(interferenceBlock.pos.x - CIRCLE_TEAM_OFFSET, interferenceBlock.pos.y);
+      Point blockInterferencePoint4 = Point(interferenceBlock.pos.x, interferenceBlock.pos.y - CIRCLE_TEAM_OFFSET); 
 
-      //now see if adjusted goal lines conflict with blockInterferencePoints
+
+      double approachAngle = angleBetween2Points(b.pos, goal.center);
+      double approachDistance = distance(b.pos, goal.center);
+
+      double offsetAngle = approachAngle + M_PI/2;
+      Circle adjustedGoal1 = goal;
+      Circle adjustedGoal2 = goal;
+
+      adjustedGoal1.center.x = goal.center.x + (cos(offsetAngle) * CIRCLE_TEAM_OFFSET);
+      adjustedGoal1.center.y = goal.center.y + (sin(offsetAngle) * CIRCLE_TEAM_OFFSET);
+      adjustedGoal2.center.x = goal.center.x - (cos(offsetAngle) * CIRCLE_TEAM_OFFSET);
+      adjustedGoal2.center.y = goal.center.y - (sin(offsetAngle) * CIRCLE_TEAM_OFFSET);
+
+
+      double angleBlockToAdjGoal1 = angleBetween2Points(b.pos, adjustedGoal1.center);
+      double angleBlockToAdjGoal2 = angleBetween2Points(b.pos, adjustedGoal2.center);
+      
+      double angleInterference4ToAdjGoal1 = angleBetween2Points(blockInterferencePoint4, adjustedGoal1.center);
+      double angleInterference3ToAdjGoal1 = angleBetween2Points(blockInterferencePoint3, adjustedGoal1.center);
+      double angleInterference2ToAdjGoal1 = angleBetween2Points(blockInterferencePoint2, adjustedGoal1.center);
+      double angleInterference1ToAdjGoal1 = angleBetween2Points(blockInterferencePoint1, adjustedGoal1.center);
+      
+      double angleInterference4ToAdjGoal2 = angleBetween2Points(blockInterferencePoint4, adjustedGoal2.center);
+      double angleInterference3ToAdjGoal2 = angleBetween2Points(blockInterferencePoint3, adjustedGoal2.center);
+      double angleInterference2ToAdjGoal2 = angleBetween2Points(blockInterferencePoint2, adjustedGoal2.center);
+      double angleInterference1ToAdjGoal2 = angleBetween2Points(blockInterferencePoint1, adjustedGoal2.center);
+
+      if (angleInterference4ToAdjGoal1 < angleBlockToAdjGoal1 || angleInterference3ToAdjGoal1 < angleBlockToAdjGoal1 || angleInterference2ToAdjGoal1 < angleBlockToAdjGoal1 || angleInterference1ToAdjGoal1 < angleBlockToAdjGoal1){
+        //Interference
+        return moveBlockOrient; 
+      } else if (angleInterference4ToAdjGoal2 > angleBlockToAdjGoal2 || angleInterference3ToAdjGoal2 > angleBlockToAdjGoal2 || angleInterference2ToAdjGoal2 < angleBlockToAdjGoal2 || angleInterference1ToAdjGoal2 < angleBlockToAdjGoal2){
+        //Interference
+        return moveBlockOrient;       
+      } else {
+        return straightApproach;
+      }
       
 
       
