@@ -450,10 +450,9 @@ bool driveTowardsPointHelper(Robot& r, Point p) {
    if (distance(p, r.pos) < DISTANCE_THRESHOLD) {
     return true;
    }
-
    // If our angle is too far off, re adjust
-   if (abs(desiredAngle(r, p) - r.heading) > .3) {
-    // If we are greater than .3, we are gonna call rotate to our desired angle
+   if (abs(desiredAngle(r, p) - r.heading) > .12) {
+    // If we are greater than .12, we are gonna call rotate to our desired angle
     rotateToAngle(r, desiredAngle(r, p));
    }
 

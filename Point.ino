@@ -143,8 +143,8 @@ double desiredAngle(Robot r, Point p) {
    * TODO (JCohner): Figure out solution to how the angle can go from slightly under -Pi to slightly under Pi in such a quick step. 
    * (see readViveSensors in Vive.ino)
    */
-   double yDiff = p.y - r.pos.y;
-   double xDiff = p.x - r.pos.x;
+   double yDiff = r.pos.y - p.y;
+   double xDiff = r.pos.x - p.x;
    return atan2(yDiff, xDiff);
 }
 
