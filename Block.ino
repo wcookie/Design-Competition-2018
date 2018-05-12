@@ -114,6 +114,9 @@ blockEngageState blockDetermineEngageState (Block b, const Robot& r) {
       } else {
         goal = innerCircle;
       }
+      Serial.println(goal.center.x);
+      Serial.println(goal.center.y);
+
       
       //determine if closest enemy block interferes 
       Block interferenceBlock1;
@@ -138,11 +141,7 @@ blockEngageState blockDetermineEngageState (Block b, const Robot& r) {
         interferenceBlock = interferenceBlock2;
       }
       
-      Point blockInterferencePoint1 = Point(interferenceBlock.pos.x + CIRCLE_TEAM_OFFSET, interferenceBlock.pos.y);
-      Point blockInterferencePoint2 = Point(interferenceBlock.pos.x, interferenceBlock.pos.y + CIRCLE_TEAM_OFFSET); 
-      Point blockInterferencePoint3 = Point(interferenceBlock.pos.x - CIRCLE_TEAM_OFFSET, interferenceBlock.pos.y);
-      Point blockInterferencePoint4 = Point(interferenceBlock.pos.x, interferenceBlock.pos.y - CIRCLE_TEAM_OFFSET); 
-
+      Point blockInterferencePoint = Point(interferenceBlock.pos.x, interferenceBlock.pos.y);
 
       double approachAngle = angleBetween2Points(b.pos, goal.center);
       double approachDistance = distance(b.pos, goal.center);
@@ -160,20 +159,13 @@ blockEngageState blockDetermineEngageState (Block b, const Robot& r) {
       double angleBlockToAdjGoal1 = angleBetween2Points(b.pos, adjustedGoal1.center);
       double angleBlockToAdjGoal2 = angleBetween2Points(b.pos, adjustedGoal2.center);
       
-      double angleInterference4ToAdjGoal1 = angleBetween2Points(blockInterferencePoint4, adjustedGoal1.center);
-      double angleInterference3ToAdjGoal1 = angleBetween2Points(blockInterferencePoint3, adjustedGoal1.center);
-      double angleInterference2ToAdjGoal1 = angleBetween2Points(blockInterferencePoint2, adjustedGoal1.center);
-      double angleInterference1ToAdjGoal1 = angleBetween2Points(blockInterferencePoint1, adjustedGoal1.center);
-      
-      double angleInterference4ToAdjGoal2 = angleBetween2Points(blockInterferencePoint4, adjustedGoal2.center);
-      double angleInterference3ToAdjGoal2 = angleBetween2Points(blockInterferencePoint3, adjustedGoal2.center);
-      double angleInterference2ToAdjGoal2 = angleBetween2Points(blockInterferencePoint2, adjustedGoal2.center);
-      double angleInterference1ToAdjGoal2 = angleBetween2Points(blockInterferencePoint1, adjustedGoal2.center);
+      double angleInterferenceToAdjGoal1 = angleBetween2Points(blockInterferencePoint, adjustedGoal1.center);
+      double angleInterferenceToAdjGoal2 = angleBetween2Points(blockInterferencePoint, adjustedGoal2.center);
 
-      if ((angleInterference4ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference3ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference2ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference1ToAdjGoal1 < angleBlockToAdjGoal1)){
+      if (angleInterferenceToAdjGoal1 < angleBlockToAdjGoal1){
         //Interference
         return moveBlockOrient; 
-      } else if ((angleInterference4ToAdjGoal2 > angleBlockToAdjGoal2) || (angleInterference3ToAdjGoal2 > angleBlockToAdjGoal2) || (angleInterference2ToAdjGoal2 < angleBlockToAdjGoal2) || (angleInterference1ToAdjGoal2 < angleBlockToAdjGoal2)){
+      } else if (angleInterferenceToAdjGoal2 > angleBlockToAdjGoal2){
         //Interference
         return moveBlockOrient;       
       } else {
@@ -198,6 +190,8 @@ blockEngageState blockDetermineEngageState (Block b, const Robot& r) {
       } else {
         goal = innerSquare;
       }
+      Serial.println(goal.center.x);
+      Serial.println(goal.center.y);
       
       //determine if closest enemy block interferes 
       Block interferenceBlock1;
@@ -222,12 +216,7 @@ blockEngageState blockDetermineEngageState (Block b, const Robot& r) {
         interferenceBlock = interferenceBlock2;
       }
       
-      Point blockInterferencePoint1 = Point(interferenceBlock.pos.x + SQUARE_TEAM_OFFSET, interferenceBlock.pos.y);
-      Point blockInterferencePoint2 = Point(interferenceBlock.pos.x, interferenceBlock.pos.y + SQUARE_TEAM_OFFSET); 
-      Point blockInterferencePoint3 = Point(interferenceBlock.pos.x - SQUARE_TEAM_OFFSET, interferenceBlock.pos.y);
-      Point blockInterferencePoint4 = Point(interferenceBlock.pos.x, interferenceBlock.pos.y - SQUARE_TEAM_OFFSET); 
-
-
+      Point blockInterferencePoint = Point(interferenceBlock.pos.x, interferenceBlock.pos.y); 
       double approachAngle = angleBetween2Points(b.pos, goal.center);
       double approachDistance = distance(b.pos, goal.center);
 
@@ -244,40 +233,34 @@ blockEngageState blockDetermineEngageState (Block b, const Robot& r) {
       double angleBlockToAdjGoal1 = angleBetween2Points(b.pos, adjustedGoal1.center);
       double angleBlockToAdjGoal2 = angleBetween2Points(b.pos, adjustedGoal2.center);
       
-      double angleInterference4ToAdjGoal1 = angleBetween2Points(blockInterferencePoint4, adjustedGoal1.center);
-      double angleInterference3ToAdjGoal1 = angleBetween2Points(blockInterferencePoint3, adjustedGoal1.center);
-      double angleInterference2ToAdjGoal1 = angleBetween2Points(blockInterferencePoint2, adjustedGoal1.center);
-      double angleInterference1ToAdjGoal1 = angleBetween2Points(blockInterferencePoint1, adjustedGoal1.center);
-      
-      double angleInterference4ToAdjGoal2 = angleBetween2Points(blockInterferencePoint4, adjustedGoal2.center);
-      double angleInterference3ToAdjGoal2 = angleBetween2Points(blockInterferencePoint3, adjustedGoal2.center);
-      double angleInterference2ToAdjGoal2 = angleBetween2Points(blockInterferencePoint2, adjustedGoal2.center);
-      double angleInterference1ToAdjGoal2 = angleBetween2Points(blockInterferencePoint1, adjustedGoal2.center);
+      double angleInterferenceToAdjGoal1 = angleBetween2Points(blockInterferencePoint, adjustedGoal1.center);
+      double angleInterferenceToAdjGoal2 = angleBetween2Points(blockInterferencePoint, adjustedGoal2.center);
+
       if (((angleBlockToAdjGoal1 > 0) && (angleBlockToAdjGoal2 > 0))){
-        if ((angleInterference4ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference3ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference2ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference1ToAdjGoal1 < angleBlockToAdjGoal1)){
+        if (angleInterferenceToAdjGoal1 < angleBlockToAdjGoal1){
           //Interference
           return moveBlockOrient; 
-        } else if ((angleInterference4ToAdjGoal2 > angleBlockToAdjGoal2) || (angleInterference3ToAdjGoal2 > angleBlockToAdjGoal2) || (angleInterference2ToAdjGoal2 < angleBlockToAdjGoal2) || (angleInterference1ToAdjGoal2 < angleBlockToAdjGoal2)){
+        } else if (angleInterferenceToAdjGoal2 > angleBlockToAdjGoal2){
           //Interference
           return moveBlockOrient;       
         } else {
           return straightApproach;
         }
       } else if ((angleBlockToAdjGoal1 < 0) && (angleBlockToAdjGoal2 > 0)){ //this is the case where the return value of atan2 has wrapped around on the lefthand side, execute state logic accordingly 
-        if ((angleInterference4ToAdjGoal1 > -(angleBlockToAdjGoal1)) || (angleInterference3ToAdjGoal1 > -(angleBlockToAdjGoal1)) || (angleInterference2ToAdjGoal1 > -(angleBlockToAdjGoal1)) || (angleInterference1ToAdjGoal1 > -(angleBlockToAdjGoal1))){
+        if (angleInterferenceToAdjGoal1 > -(angleBlockToAdjGoal1)){
           //Interference
           return moveBlockOrient; 
-        } else if ((angleInterference4ToAdjGoal2 > angleBlockToAdjGoal2) || (angleInterference3ToAdjGoal2 > angleBlockToAdjGoal2) || (angleInterference2ToAdjGoal2 < angleBlockToAdjGoal2) || (angleInterference1ToAdjGoal2 < angleBlockToAdjGoal2)){ //not revering these ones, going to assume "split case" is where 1 overshoots and 2 remains positive
+        } else if (angleInterferenceToAdjGoal2 > angleBlockToAdjGoal2) {
           //Interference
           return moveBlockOrient;       
         } else {
           return straightApproach;
         }
       } else {//return val of atan2 wrapped around on righthand side 
-        if ((angleInterference4ToAdjGoal1 < (angleBlockToAdjGoal1)) || (angleInterference3ToAdjGoal1 < (angleBlockToAdjGoal1)) || (angleInterference2ToAdjGoal1 < (angleBlockToAdjGoal1)) || (angleInterference1ToAdjGoal1 <(angleBlockToAdjGoal1))){
+        if (angleInterferenceToAdjGoal1 < angleBlockToAdjGoal1){
           //Interference
           return moveBlockOrient; 
-        } else if ((angleInterference4ToAdjGoal2 < -(angleBlockToAdjGoal2)) || (angleInterference3ToAdjGoal2 < -(angleBlockToAdjGoal2)) || (angleInterference2ToAdjGoal2 < -(angleBlockToAdjGoal2)) || (angleInterference1ToAdjGoal2 < -(angleBlockToAdjGoal2))){ //not revering these ones, going to assume "split case" is where 1 overshoots and 2 remains positive
+        } else if (angleInterferenceToAdjGoal2 < -(angleBlockToAdjGoal2)){
           //Interference
           return moveBlockOrient;       
         } else {
