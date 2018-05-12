@@ -1,13 +1,12 @@
 // Tab for miscalleneous functions / utility
-#define BLOCK_LASER_THRESHOLD 6 // If the difference is above this we see a block
+#define BLOCK_LASER_THRESHOLD 75 // If the difference is above this we see a block
 
 int currentSensorPin1 = 14; // A0
 int currentSensorPin2 = 15; // A1
 int tripwirePin = 22; // A8
-int blockPTPin = 16; // A2
-int blockLaserPin3 = 11;
-int blockLaserPin2 = 10;
-int blockLaserPin1 = 9;
+int blockPTPin = 18; // A2
+int blockLaserPin2 = 21;
+int blockLaserPin1 = 20;
 
 double tripwireThreshold = 40; // If we are below this, we are tripped.  Maybe should be calibrated
 
@@ -22,7 +21,6 @@ void lasersSetup() {
   pinMode(blockPTPin, INPUT);
   pinMode(blockLaserPin1, OUTPUT);
   pinMode(blockLaserPin2, OUTPUT);
-  pinMode(blockLaserPin3, OUTPUT);
 }
 
 double readCurrentSensor() {
@@ -89,7 +87,6 @@ double readBlockLaser() {
 void flashBlockLasers(bool mode) {
   digitalWrite(blockLaserPin1, mode);
   digitalWrite(blockLaserPin2, mode);
-  digitalWrite(blockLaserPin3, mode);
 }
 
 bool readingBlock(bool debug) {

@@ -81,6 +81,7 @@ enum blockEngageState {
   moveBlockOrient, // obstacles in way of straightline, move block, reorient, reapproach
   straightApproach, // Robot should find straightline approach TODO(JCohner) call desiredOrientationPointStraight()
 };
+
 // Our Structs
 
 struct Point {
@@ -196,7 +197,7 @@ void loop() {
   setRobotPositionAndDirection(phoenix);
   determineRobotState(phoenix);
   printDebugging(phoenix);
-  //readingBlock(false);
+  readingBlock(true);
 
   // SWITCH ON STATE
   switch(phoenix.driving) {
