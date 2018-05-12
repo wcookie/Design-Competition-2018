@@ -146,7 +146,8 @@ struct Robot {
   searchState searching; // whether we are still on the ellipse or not
   attackState atk; // whether we are attacking or defending
   drivingState driving; // our driving state (whether we are going to block, etc.)
-  blockEngageState approach;
+  blockEngageState approach; //how robot is approaching target block or positioning itself
+  ellipseState inOrOut; //whether the robot is in or out of the ellipse
   Point goalPos; // This is mostly relevant for orienting
   Robot(Point p = Point(), double h = 0.0, goalType t = circle, Block b = Block(), 
         searchState s = ellipse, attackState a = scoring, 
