@@ -82,6 +82,7 @@ void setRobotPositionAndDirection(Robot& r) {
    double rawXCenter = (rvd.v1LightPoint.x + rvd.v2LightPoint.x) / 2;
    double rawYCenter = (rvd.v1LightPoint.y + rvd.v2LightPoint.y) / 2;
    r.pos = physicalPointToVirtualPoint(LightPoint(rawXCenter, rawYCenter));
+   r.inOrOut = robotEllipseState(r);
 }
 
 blockType whatAreWeHolding(Robot r) {
