@@ -258,6 +258,7 @@ void moveTowardsBlock(Robot r) {
           // Turn off motors and tripwire
           turnOffTripwire();
           turnMotorsOff();
+          r.desiredBlock.state = moved;
           return;
     } else {
       // We have the wrong one
@@ -265,12 +266,14 @@ void moveTowardsBlock(Robot r) {
       // Turn off motors and tripwire
       turnMotorsOff();
       turnOffTripwire();
+      r.desiredBlock.state = invisible;
       return;
     }
    }
    // If we are reading the block, then we want to go straight
    if (readingBlock(false)) {
     // We read the block
+    r.desiredBlock.state = seen;
     // TODO: Make sure the angle kinda makes sense for where we want to be going
     moveMotors(STANDARD_SPEED, true, STANDARD_SPEED, true);
     return;
@@ -308,8 +311,19 @@ void orientWithBlock(Robot r) {
   /*
    * This orients the robot if we already have the block 
    * so that we can face straight towards a goal.
+   * TODO(wcookie): make sure we're still holding our dude
    * Ends in holdingGoalBlock mode
    */
+   // First find our desired point
+   Point desiredPoint = desiredOrientationPointOffset(r, r.desiredBlock, r.goalPos);
+   driveTowardsPoint(r, desiredPoint);
+   //Now we rotate towards our goal position (with the block)
+   double angle = desiredAngle(r, r.goalPos);
+   rotateToAngle(r, angle);
+   // Now we want to give it off to dropOffBlock (holdingGoalBlock state) 
+   // First turn off motors
+   turnMotorsOff();
+   r.driving = holdingGoalBlock;
 }
 
 void backUpRoutine(int t) {
@@ -370,5 +384,6 @@ void driveTowardsPoint(Robot r, Point p) {
   /*
    * Drives our robot to (the vicinity of) our desired point
    */
+   // Start with rotating to the angle (should already be rotated really)
 }
 
