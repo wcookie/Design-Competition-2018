@@ -192,3 +192,11 @@ Point desiredOrientationPointStraight(Robot r, Block b, Point goal) {
    return desiredPoint;
 }
 
+Point desiredOrientationPointOffset(Robot r, Block b, Point goal) {
+  /*
+   * This determines the point we want to go to WHILE HOLDING THE BLOCK
+   * At this point we will rotate to face the goal and go straight
+   * @JCohner: This is your baby
+   */
+}
+
