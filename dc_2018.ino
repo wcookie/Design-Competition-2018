@@ -208,9 +208,8 @@ void loop() {
   // THINGS WE DO REGARDLESS OF STATE
   // First update our robot's position and direction
   setRobotPositionAndDirection(phoenix);
-  determineRobotState(phoenix);
   printDebugging(phoenix);
-  readingBlock(true);
+  //readingBlock(true);
 
   // SWITCH ON STATE
   switch(phoenix.driving) {
@@ -220,7 +219,7 @@ void loop() {
     case orienting: orientRobot(phoenix);
     case orientingWithBlock: orientWithBlock(phoenix);
   }
-  moveMotors(70, 1, 70, 1);
+  moveMotors(100, 1, 100, 1);
   delay(250);
   
 }
