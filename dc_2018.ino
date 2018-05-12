@@ -216,7 +216,7 @@ void loop() {
   setRobotPositionAndDirection(phoenix);
   printDebugging(phoenix);
   //readingBlock(true);
-  //printThreeCylinders(phoenix);
+  printThreeCylinders(phoenix);
 
   // SWITCH ON STATE
   /*switch(phoenix.driving) {
@@ -228,7 +228,8 @@ void loop() {
   }*/
   //rotateToAngle(phoenix, 0);
   //moveMotors(100, 1, 100, 1);
-  driveTowardsPoint(phoenix, innerCircle.center);
+  //driveTowardsPoint(phoenix, innerCircle.center);
+  //printBlockEngageState(,pheonix);
   delay(500);
   
 }

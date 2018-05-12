@@ -214,6 +214,6 @@ void printBlockEngageState(Block b, Robot r){
   Serial.println(" y");
 
   Serial.println("Block Engage State:");
-  Serial.println(blockDetermineEngageState (b, r));
+  Serial.println(blockDetermineEngageState(b, r));
 }
 
