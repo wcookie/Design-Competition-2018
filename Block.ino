@@ -247,7 +247,7 @@ blockEngageState blockDetermineEngageState (Block b, const Robot& r) {
       double angleInterference3ToAdjGoal2 = angleBetween2Points(blockInterferencePoint3, adjustedGoal2.center);
       double angleInterference2ToAdjGoal2 = angleBetween2Points(blockInterferencePoint2, adjustedGoal2.center);
       double angleInterference1ToAdjGoal2 = angleBetween2Points(blockInterferencePoint1, adjustedGoal2.center);
-      if (((angleBlockToAdjGoal1 > 0) && (angleBlockToAdjGoal2 > 0)) || (((angleBlockToAdjGoal1 < 0) && (angleBlockToAdjGoal2 < 0)))){
+      if (((angleBlockToAdjGoal1 > 0) && (angleBlockToAdjGoal2 > 0))){
         if ((angleInterference4ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference3ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference2ToAdjGoal1 < angleBlockToAdjGoal1) || (angleInterference1ToAdjGoal1 < angleBlockToAdjGoal1)){
           //Interference
           return moveBlockOrient; 
@@ -257,11 +257,21 @@ blockEngageState blockDetermineEngageState (Block b, const Robot& r) {
         } else {
           return straightApproach;
         }
-      } else { //this is the case where the return value of atan2 has wrapped around, execute state logic accordingly 
-        if ((angleInterference4ToAdjGoal1 > -(angleBlockToAdjGoal1)) || (angleInterference3ToAdjGoal1 > -(angleBlockToAdjGoal1)) || (angleInterference2ToAdjGoal1 > -(angleBlockToAdjGoal1)) || (angleInterference1ToAdjGoal1 < -(angleBlockToAdjGoal1))){
+      } else if ((angleBlockToAdjGoal1 < 0) && (angleBlockToAdjGoal2 > 0)){ //this is the case where the return value of atan2 has wrapped around on the lefthand side, execute state logic accordingly 
+        if ((angleInterference4ToAdjGoal1 > -(angleBlockToAdjGoal1)) || (angleInterference3ToAdjGoal1 > -(angleBlockToAdjGoal1)) || (angleInterference2ToAdjGoal1 > -(angleBlockToAdjGoal1)) || (angleInterference1ToAdjGoal1 > -(angleBlockToAdjGoal1))){
           //Interference
           return moveBlockOrient; 
         } else if ((angleInterference4ToAdjGoal2 > angleBlockToAdjGoal2) || (angleInterference3ToAdjGoal2 > angleBlockToAdjGoal2) || (angleInterference2ToAdjGoal2 < angleBlockToAdjGoal2) || (angleInterference1ToAdjGoal2 < angleBlockToAdjGoal2)){ //not revering these ones, going to assume "split case" is where 1 overshoots and 2 remains positive
+          //Interference
+          return moveBlockOrient;       
+        } else {
+          return straightApproach;
+        }
+      } else {//return val of atan2 wrapped around on righthand side 
+        if ((angleInterference4ToAdjGoal1 < (angleBlockToAdjGoal1)) || (angleInterference3ToAdjGoal1 < (angleBlockToAdjGoal1)) || (angleInterference2ToAdjGoal1 < (angleBlockToAdjGoal1)) || (angleInterference1ToAdjGoal1 <(angleBlockToAdjGoal1))){
+          //Interference
+          return moveBlockOrient; 
+        } else if ((angleInterference4ToAdjGoal2 < -(angleBlockToAdjGoal2)) || (angleInterference3ToAdjGoal2 < -(angleBlockToAdjGoal2)) || (angleInterference2ToAdjGoal2 < -(angleBlockToAdjGoal2)) || (angleInterference1ToAdjGoal2 < -(angleBlockToAdjGoal2))){ //not revering these ones, going to assume "split case" is where 1 overshoots and 2 remains positive
           //Interference
           return moveBlockOrient;       
         } else {
