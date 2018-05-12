@@ -6,6 +6,9 @@
  */
 #define CYLINDER_THRESHOLD 400 // If we are below this mark, we believe we are carrying a cylinder
 
+// How far away we want to be from our desired point
+#define DISTANCE_THRESHOLD 5
+
 // Angle difference
 #define FAST_ANGLE_DIFFERENCE .15
 #define SLOW_ANGLE_DIFFERENCE .02
@@ -426,11 +429,49 @@ bool rotateToAngleHelper(Robot& r, double goalAngle, double turningSpeed) {
    return false;
 }
 
-void driveTowardsPoint(Robot r, Point p) {
+void driveTowardsPoint(Robot& r, Point p) {
   /*
    * Drives our robot to (the vicinity of) our desired point
    * For now just goes straight.  Should be checking our angle constantly really
+   * BLOCKING
    */
-   // Start with rotating to the angle (should already be rotated really)
+   // Calls the helper until it's true
+   while(!driveTowardsPointHelper(r, p)){
+    ;
+   }
+}
+
+bool driveTowardsPointHelper(Robot& r, Point p) {
+  /*
+   * Does the physical driving
+   */  
+   setRobotPositionAndDirection(r);
+   // If our distance is within threshold return true
+   if (distance(p, r.pos) < DISTANCE_THRESHOLD) {
+    return true;
+   }
+
+   // If our angle is too far off, re adjust
+   if (abs(desiredAngle(r, p) - r.heading) > .3) {
+    // If we are greater than .3, we are gonna call rotate to our desired angle
+    rotateToAngle(r, desiredAngle(r, p));
+   }
+
+   // Otherwise drive straight
+   // First determine speed.  
+   // If we are in hodlingGoalBlock mode, or orienting mode, do standard speed.
+   double ourSpeed;
+   if ((r.driving == holdingGoalBlock) || (r.driving == orienting)) {
+    ourSpeed = STANDARD_SPEED;
+   } else if (r.team == circle) {
+    // If we are on team circle, we have to be holding our cylinder block, so set to cylinder speed
+    ourSpeed = CYLINDER_SPEED;
+   } else {
+    // We are on team cube and we want to use cube speed
+    ourSpeed = CUBE_SPEED;
+   }
+   // Now we have our speed, let's drive at that speed straight.  (we should be checking our angle and be rotating every so often
+   moveMotors(ourSpeed, 1, ourSpeed, 1);
+   return false;
 }
 
