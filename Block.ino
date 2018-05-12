@@ -43,7 +43,7 @@ Block cubes[] = {Block(Point(21.80, 44.4), cube, unknown),
                  Block(Point(142.0, 3.0), cube, unknown)};
 
 
-Block determineBesqtBlock(Robot& r) {
+Block determineBestBlock(Robot& r) {
   Block bestBlock;
   double minHeuristic = 100000;
   for (int i = 0; i < 12; ++i) {
@@ -84,6 +84,7 @@ blockEngageState blockDetermineEngageState (Block b, Robot& r, Point goal) {
     * Returns a blockEngageState [outMoveIn, inMoveOut, moveBlockOrient, straightLine]
     * TODO: (JCohner) add heuristic altering values in blockDetermineHeuristic
     */
+    /*
     if (r.team == circle) {
       // find which of outter circle is closer
       double distOutter1 = distance(r.pos, outerCircle[0].center);
@@ -99,7 +100,7 @@ blockEngageState blockDetermineEngageState (Block b, Robot& r, Point goal) {
     } else {
       
     }
-    
+    */
 
 }
 
