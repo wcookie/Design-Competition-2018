@@ -175,8 +175,8 @@ void dropOffBlock(Robot r) {
    }
    if (inGoal) {
     // What we're doing if we are in the goal
-    // Back up for 2.5 seconds
-    backUpRoutine(2500);
+    // Back up for 2 seconds
+    backUpRoutine(2000);
     // Determine our next block
     r.desiredBlock = determineBestBlock(r);
     // Turn motors off
