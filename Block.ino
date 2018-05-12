@@ -19,23 +19,23 @@ struct Block {
  */
 
 
-Block cylinders[] = {Block(Point(21.8, 44.4), cylinder, unknown),
-                     Block(Point(10.1, 38.5), cylinder, unknown),
-                     Block(Point(6.7, 27.30), cylinder, unknown),
-                     Block(Point(2.0, 3.0), cylinder, unknown),
-                     Block(Point(2.0, 3.0), cylinder, unknown),
-                     Block(Point(2.0, 3.0), cylinder, unknown),
-                     Block(Point(2.0, 3.0), cylinder, unknown),
-                     Block(Point(2.0, 3.0), cylinder, unknown),
-                     Block(Point(2.0, 3.0), cylinder, unknown),
-                     Block(Point(2.0, 3.0), cylinder, unknown),
-                     Block(Point(2.0, 3.0), cylinder, unknown),
-                     Block(Point(2.0, 3.0), cylinder, unknown)};
+Block cylinders[] = {Block(Point(10.8, 23.6), cylinder, unknown),
+                     Block(Point(15.5, 39.7), cylinder, unknown),
+                     Block(Point(25.3, 13.40), cylinder, unknown),
+                     Block(Point(144.0, 3.0), cylinder, unknown),
+                     Block(Point(144.0, 3.0), cylinder, unknown),
+                     Block(Point(144.0, 3.0), cylinder, unknown),
+                     Block(Point(144.0, 3.0), cylinder, unknown),
+                     Block(Point(144.0, 3.0), cylinder, unknown),
+                     Block(Point(144.0, 3.0), cylinder, unknown),
+                     Block(Point(144.0, 3.0), cylinder, unknown),
+                     Block(Point(144.0, 3.0), cylinder, unknown),
+                     Block(Point(144.0, 3.0), cylinder, unknown)};
                      
 
-Block cubes[] = {Block(Point(21.80, 44.4), cube, unknown),
-                 Block(Point(10.1, 38.5), cube, unknown),
-                 Block(Point(6.7, 27.30), cube, unknown),
+Block cubes[] = {Block(Point(17.3, 16.5), cube, unknown),
+                 Block(Point(10.2, 31.8), cube, unknown),
+                 Block(Point(23.4, 44), cube, unknown),
                  Block(Point(142.0, 3.0), cube, unknown),
                  Block(Point(142.0, 3.0), cube, unknown),
                  Block(Point(142.0, 3.0), cube, unknown),

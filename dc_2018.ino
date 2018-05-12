@@ -176,9 +176,9 @@ typedef struct {
 
 // Our Global Variables
 Robot phoenix; // Phoenix is our robot object used throughout
-Circle Circles[] = {Circle(Point(6.1, 49.0), 5.0), // Outer
-                    Circle(Point(30.5, 30.75), 5.0), // Inner
-                    Circle(Point(100.0, 11), 5.0) // Outer
+Circle Circles[] = {Circle(Point(8.6, 53.5), 7.5), // Outer
+                    Circle(Point(43.6, 29.5), 7.5), // Inner
+                    Circle(Point(113.5, 8.0), 7.5) // Outer
 };
 Circle innerCircle = Circles[1];
 Circle outerCircles[] = {Circles[0], Circles[2]};
@@ -225,9 +225,9 @@ void loop() {
     case orienting: orientRobot(phoenix);
     case orientingWithBlock: orientWithBlock(phoenix);
   }*/
-  rotateToAngle(phoenix, 0);
+  //rotateToAngle(phoenix, 0);
   //moveMotors(100, 1, 100, 1);
-  delay(5000);
+  delay(500);
   
 }
 
